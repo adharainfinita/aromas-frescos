@@ -93,6 +93,7 @@ Compras
     }
      ```
 ## Estructura del proyecto
+```bash
 /my-api
 │
 ├── /src                # Carpeta principal del código fuente
@@ -104,7 +105,7 @@ Compras
 ├── tsconfig.json       # Configuración de TypeScript
 ├── nodemon.json        # Configuración de Nodemon para reinicio automático
 └── README.md           # Documentación del proyecto
-
+```
 ## Base de Datos
 El proyecto utiliza SQLite como sistema de base de datos, almacenando los datos en un archivo local (my-database.db). Las tablas principales son:
 
