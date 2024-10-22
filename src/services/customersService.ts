@@ -1,11 +1,17 @@
 import { connectDB } from '../db/db';
 
+interface ICustomer {
+  name: string;
+  email?: string;
+  phone: string;
+}
+
 // Función para crear un nuevo cliente
-export async function createCustomer(customer_name: string, customer_email: string, customer_phone: string) {
+export async function createCustomer(customer:ICustomer) {
   const db = await connectDB();
   const result = await db.run(
     `INSERT INTO customers (customer_name, customer_email, customer_phone) VALUES (?, ?, ?)`,
-    [customer_name, customer_email, customer_phone]
+    [customer.name, customer.email, customer.phone]
   );
   return result.lastID;
 }
@@ -25,11 +31,11 @@ export async function getCustomerById(id: number) {
 }
 
 // Función para actualizar un cliente
-export async function updateCustomer(id: number, customer_name: string, customer_email: string, customer_phone: string) {
+export async function updateCustomer(id: number, customer:ICustomer) {
   const db = await connectDB();
   const result = await db.run(
     `UPDATE customers SET customer_name = ?, customer_email = ?, customer_phone = ? WHERE customer_id = ?`,
-    [customer_name, customer_email, customer_phone, id]
+    [customer.name, customer.email, customer.phone, id]
   );
   return result.changes;
 }

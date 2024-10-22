@@ -12,8 +12,7 @@ router.post(
   validate,                // Middleware para manejar los resultados de validación
   async (req: Request, res: Response): Promise<void> => {
     try {
-      const { customer_name, customer_email, customer_phone } = req.body;
-      const customerId = await createCustomer(customer_name, customer_email, customer_phone);
+      const customerId = await createCustomer(req.body);
       res.status(201).json({ message: 'Cliente creado con éxito', customer_id: customerId });
     } catch (error) {
       console.error('Error al crear el cliente:', error);
@@ -62,8 +61,7 @@ router.put(
   async (req: Request, res: Response):  Promise<void>  => {
     try {
       const { id } = req.params;
-      const { customer_name, customer_email, customer_phone } = req.body;
-      const changes = await updateCustomer(parseInt(id), customer_name, customer_email, customer_phone);
+      const changes = await updateCustomer(parseInt(id), req.body);
       if (changes! > 0) {
         res.status(200).json({ message: 'Cliente actualizado con éxito' });
       } else {

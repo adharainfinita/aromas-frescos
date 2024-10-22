@@ -13,7 +13,7 @@ initDB().then(() => {
 });
 
 // Ruta básica
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('API en Node.js con TypeScript y SQLite');
 });
 
