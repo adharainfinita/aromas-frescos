@@ -4,7 +4,7 @@
   "description": "## Descripción",
   "main": "index.js",
   "scripts": {
-    "test": "npm test",
+    "test": "jest",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc"
@@ -20,15 +20,22 @@
   },
   "homepage": "https://github.com/adharainfinita/aromas-frescos#readme",
   "dependencies": {
+    "@types/morgan": "^1.9.9",
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
+    "morgan": "^1.10.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.8",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }

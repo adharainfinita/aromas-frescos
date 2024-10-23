@@ -3,6 +3,9 @@ import { connectDB } from './db';
 // Función para inicializar la base de datos (crear tablas)
 export async function initDB() {
   const db = await connectDB();
+  db.on('trace', (sql:any) => {
+    console.log('Ejecutando consulta SQL:', sql);
+  });
 
   // Crear tabla customers si no existe
   await db.exec(`

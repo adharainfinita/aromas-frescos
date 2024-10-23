@@ -7,7 +7,7 @@ const router = express.Router();
 
 // POST: Crear una nueva compra
 router.post(
-  '/purchases',
+  '/',
   validateCreatePurchase,  // Validaciones de creación de compras
   validate,                // Middleware para manejar errores de validación
   async (req: Request, res: Response): Promise<void> => {
@@ -22,7 +22,7 @@ router.post(
 );
 
 // GET: Obtener todas las compras
-router.get('/purchases', async (req: Request, res: Response): Promise<void> => {
+router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const purchases = await getAllPurchases();
     res.status(200).json(purchases);
@@ -34,7 +34,7 @@ router.get('/purchases', async (req: Request, res: Response): Promise<void> => {
 
 // GET: Obtener una compra por ID
 router.get(
-  '/purchases/:id',
+  '/:id',
   validatePurchaseId,  // Validación del ID de compra
   validate,            // Middleware para manejar errores de validación
   async (req: Request, res: Response): Promise<void> => {
@@ -55,7 +55,7 @@ router.get(
 
 // PUT: Actualizar una compra
 router.put(
-  '/purchases/:id',
+  '/:id',
   validatePurchaseId,  // Validación del ID de compra
   validate,            // Middleware para manejar errores de validación
   async (req: Request, res: Response): Promise<void> => {

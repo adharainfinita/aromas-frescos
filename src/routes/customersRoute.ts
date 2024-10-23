@@ -7,9 +7,9 @@ const router = express.Router();
 
 // POST: Crear un nuevo cliente
 router.post(
-  '/customers',
-  validateCreateCustomer,  // Middleware de validación modularizado
-  validate,                // Middleware para manejar los resultados de validación
+  '/',
+  validateCreateCustomer,
+  validate,
   async (req: Request, res: Response): Promise<void> => {
     try {
       const customerId = await createCustomer(req.body);
@@ -22,7 +22,7 @@ router.post(
 );
 
 // GET: Obtener todos los clientes
-router.get('/customers', async (req: Request, res: Response): Promise<void>  => {
+router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const customers = await getAllCustomers();
     res.status(200).json(customers);
@@ -34,10 +34,10 @@ router.get('/customers', async (req: Request, res: Response): Promise<void>  => 
 
 // GET: Obtener un cliente por su ID
 router.get(
-  '/customers/:id',
-  validateCustomerId,  // Middleware de validación modularizado
-  validate,            // Middleware para manejar los resultados de validación
-  async (req: Request, res: Response):  Promise<void>  => {
+  '/:id',
+  validateCustomerId,
+  validate,
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const customer = await getCustomerById(parseInt(id));
@@ -55,10 +55,10 @@ router.get(
 
 // PUT: Actualizar los datos de un cliente
 router.put(
-  '/customers/:id',
-  validateUpdateCustomer,  // Middleware de validación modularizado
-  validate,                // Middleware para manejar los resultados de validación
-  async (req: Request, res: Response):  Promise<void>  => {
+  '/:id',
+  validateUpdateCustomer,
+  validate,
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const changes = await updateCustomer(parseInt(id), req.body);

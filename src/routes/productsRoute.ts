@@ -7,7 +7,7 @@ const router = express.Router();
 
 // POST: Crear un nuevo producto
 router.post(
-  '/products',
+  '/',
   validateCreateProduct,  // Validaciones de creación de productos
   validate,               // Middleware para manejar resultados de validación
   async (req: Request, res: Response): Promise<void> => {
@@ -22,7 +22,7 @@ router.post(
 );
 
 // GET: Obtener todos los productos
-router.get('/products', async (req: Request, res: Response): Promise<void> => {
+router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const products = await getAllProducts();
     res.status(200).json(products);
@@ -34,7 +34,7 @@ router.get('/products', async (req: Request, res: Response): Promise<void> => {
 
 // GET: Obtener un producto por su ID
 router.get(
-  '/products/:id',
+  '/:id',
   validateProductId,  // Validación del ID del producto
   validate,           // Middleware para manejar resultados de validación
   async (req: Request, res: Response): Promise<void> => {
@@ -55,7 +55,7 @@ router.get(
 
 // PUT: Actualizar un producto
 router.put(
-  '/products/:id',
+  '/:id',
   validateUpdateProduct,  // Validaciones para la actualización de productos
   validate,               // Middleware para manejar resultados de validación
   async (req: Request, res: Response): Promise<void> => {
