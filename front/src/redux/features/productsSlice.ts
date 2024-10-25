@@ -5,7 +5,7 @@ import { IProduct } from '../../interfaces/product';
 
 interface ProductState {
   products: IProduct[],
-  detail: IProduct
+  detail: IProduct | null
 }
 
 const initialState: ProductState = {
@@ -27,10 +27,13 @@ const productsSlice = createSlice({
   reducers: {
     getProducts: (state, action: PayloadAction<IProduct[]>) =>{
       state.products= action.payload;
+    },
+    setProductDetail: (state, action: PayloadAction<IProduct | null>)=>{
+      state.detail = action.payload;
     }
   },
   
 });
 
-export const { getProducts} = productsSlice.actions;
+export const { getProducts, setProductDetail} = productsSlice.actions;
 export default productsSlice.reducer;

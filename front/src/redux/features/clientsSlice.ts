@@ -5,7 +5,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 interface CustomerState {
   customers: ICustomer[],
-  detail: ICustomer
+  detail: ICustomer | null
 }
 
 const initialState: CustomerState = {
@@ -24,9 +24,12 @@ const customersSlice = createSlice({
   reducers: {
     getCustomers: (state, action: PayloadAction<ICustomer[]>) => {
       state.customers = action.payload;
+    },
+    setCustomerDetail: (state, action: PayloadAction<ICustomer | null>) => {
+      state.detail = action.payload;
     }
   },
 });
 
-export const { getCustomers } = customersSlice.actions;
+export const { getCustomers, setCustomerDetail } = customersSlice.actions;
 export default customersSlice.reducer;
