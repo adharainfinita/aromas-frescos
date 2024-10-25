@@ -1,0 +1,8 @@
+Hecho:
+- Renderizado de productos y clientes
+- Detalles de productos y clientes
+
+Por hacer:
+- Vista de compras
+- Formularios para agregar y/o actualizar clientes y/o productos
+- Estilos
