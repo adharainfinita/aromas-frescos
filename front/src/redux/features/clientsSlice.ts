@@ -1,29 +1,32 @@
 // clientsSlice.ts
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice,  } from '@reduxjs/toolkit';
+import { ICustomer } from '../../interfaces/customer';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-export const fetchClients = createAsyncThunk('clients/fetchClients', async () => {
-  const response = await axios.get('/api/clients');
-  return response.data;
-});
+interface CustomerState {
+  customers: ICustomer[],
+  detail: ICustomer
+}
 
-const clientsSlice = createSlice({
+const initialState: CustomerState = {
+  customers: [],
+  detail: {
+    customer_id: 0,
+    customer_name: "",
+    customer_email: "",
+    customer_phone: ""
+  }
+}
+
+const customersSlice = createSlice({
   name: 'clients',
-  initialState: {
-    data: [],
-    status: 'idle',
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchClients.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchClients.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.data = action.payload;
-      });
+  initialState,
+  reducers: {
+    getCustomers: (state, action: PayloadAction<ICustomer[]>) => {
+      state.customers = action.payload;
+    }
   },
 });
 
-export default clientsSlice.reducer;
+export const { getCustomers } = customersSlice.actions;
+export default customersSlice.reducer;

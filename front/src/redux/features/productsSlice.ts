@@ -1,28 +1,36 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { IProduct } from '../../interfaces/product';
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get('/api/products');
-  return response.data;
-});
+
+interface ProductState {
+  products: IProduct[],
+  detail: IProduct
+}
+
+const initialState: ProductState = {
+  products: [],
+  detail: {
+    product_id: 0,
+    product_name: "",
+    product_brand: "",
+    product_category: "",
+    product_price: 0,
+    product_available: false,
+    product_discontinued: false
+  }
+}
 
 const productsSlice = createSlice({
   name: 'products',
-  initialState: {
-    data: [],
-    status: 'idle'
+  initialState,
+  reducers: {
+    getProducts: (state, action: PayloadAction<IProduct[]>) =>{
+      state.products= action.payload;
+    }
   },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.data = action.payload;
-      });
-  },
-})
+  
+});
 
+export const { getProducts} = productsSlice.actions;
 export default productsSlice.reducer;
