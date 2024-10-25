@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
+import cors from 'cors'
 import customerRoutes from './routes/customersRoute';
 import productsRoute from './routes/productsRoute';
 import purchaseRoute from './routes/purchaseRoute';
@@ -8,6 +9,7 @@ import { initDB } from './db/initDb';
 const app: Application = express();
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors())
 
 // Ruta básica
 app.get('/', (_req, res) => {
@@ -27,9 +29,9 @@ if (process.env.NODE_ENV !== 'test') {
     console.log('Base de datos inicializada correctamente');
 
     // Iniciar servidor
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-      console.log(`Servidor corriendo en el puerto ${port}`);
+    app.listen(3000, '0.0.0.0', () => {
+      console.log(`Servidor corriendo en el puerto ${3000
+      }`);
     });
   }).catch(err => {
     console.log('Error al inicializar la base de datos: ', err);

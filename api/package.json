@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/adharainfinita/aromas-frescos#readme",
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "@types/morgan": "^1.9.9",
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
     "morgan": "^1.10.0",
