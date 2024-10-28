@@ -1,13 +1,16 @@
 export interface IPurchase {
-  id: number;
+  purchase_id: number;
   customer_id: number;
-  amount: number;
-  paid: boolean;
-  paid_date: string;
+  purchase_amount: number;
+  purchase_paid: boolean;
+  purchase_paid_date: string;
 }
 
+export interface IDetail {
+  details: Array<IDetails>;
+}
 export interface IDetails {
-  id: number;
+  purchase_detail_id: number;
   purchase_id: number;
   product_id: number;
   quantity: number;

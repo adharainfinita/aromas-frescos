@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { IPurchase, IDetails } from '../../interfaces/purchase';
+import { IPurchase, IDetail } from '../../interfaces/purchase';
 
 interface PurchaseState {
   purchases: IPurchase[],
-  detail: IDetails | null
+  detail: IDetail | null
 }
 
 const initialState: PurchaseState = {
@@ -19,9 +19,12 @@ const purchaseSlice = createSlice({
   reducers: {
     getPurchases: (state, action:PayloadAction<IPurchase[]>)=>{
       state.purchases = action.payload;
+    },
+    setPurchaseDetail: (state, action: PayloadAction<IDetail | null>)=>{
+      state.detail = action.payload;
     }
   }
 });
 
-export const {getPurchases} = purchaseSlice.actions;
+export const {getPurchases, setPurchaseDetail} = purchaseSlice.actions;
 export default purchaseSlice.reducer;
