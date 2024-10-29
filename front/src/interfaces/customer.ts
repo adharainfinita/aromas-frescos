@@ -4,3 +4,9 @@ export interface ICustomer {
   customer_email?: string;
   customer_phone: string;
 }
+
+export interface ICustomerForm {
+  name: string;
+  email?: string;
+  phone: string;
+}

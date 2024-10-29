@@ -70,8 +70,7 @@ const Dashboard = () => {
 		}
 		if (event === "customer") {
 			navigate("/createCustomer");
-		} 
-		else if(event === 'purchase') {
+		} else if (event === "purchase") {
 			navigate("/createPurchase");
 		}
 	};

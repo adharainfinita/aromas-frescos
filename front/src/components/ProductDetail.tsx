@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { setProductDetail } from "../redux/features/productsSlice";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 const ProductDetail = () => {
+	const navigate = useNavigate();
 	const { id } = useParams<{ id: string }>();
 	const dispatch = useDispatch();
 	const products = useSelector((state: RootState) => state.products.products);
@@ -26,6 +27,15 @@ const ProductDetail = () => {
 
 	return (
 		<div>
+			<Button
+				variant="contained"
+				size="large"
+				onClick={() => {
+					navigate("/");
+				}}
+			>
+				🔙
+			</Button>
 			<Typography variant="h4">Detalles del producto</Typography>
 			<Typography variant="body1">
 				Nombre: {productDetail.product_name}

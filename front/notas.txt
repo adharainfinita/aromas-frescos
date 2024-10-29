@@ -3,6 +3,6 @@ Hecho:
 - Detalles de productos y clientes
 
 Por hacer:
-- Vista de compras
-- Formularios para agregar y/o actualizar clientes y/o productos
+- Vista de compras LISTO
+- Formularios para agregar y/o actualizar clientes y/o productos LISTO(crear)
 - Estilos
