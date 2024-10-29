@@ -7,3 +7,13 @@ export interface IProduct {
   product_available: boolean;
   product_discontinued?: boolean;
 }
+
+export interface IProductForm {
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  available: boolean;
+  discontinued?: boolean;
+
+}

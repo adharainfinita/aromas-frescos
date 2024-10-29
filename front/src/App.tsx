@@ -11,6 +11,7 @@ import { getAllPurchases } from './services/purchasesServices';
 import { getProducts } from './redux/features/productsSlice';
 import { getCustomers } from './redux/features/clientsSlice';
 import { getPurchases } from './redux/features/purchaseSlice';
+import FormCreateProduct from './components/FormCreateProduct';
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/client/:id" element={<ClientDetail />} />
+        <Route path='/createProduct' element={<FormCreateProduct/>}/>
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/purchase/:id" element={<PurchaseDetail />} />
       </Routes>

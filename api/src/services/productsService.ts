@@ -12,7 +12,8 @@ export interface IProduct {
 //Función para crear un nuevo producto
 export async function createProduct(product: IProduct) {
 	const db = await connectDB();
-  
+  console.log(product);
+	
 	const result = await db.run(
 		`INSERT INTO products (product_name, product_brand, product_category, product_price, product_available, product_discontinued) VALUES(?, ?, ?, ?, ?, ?)`,
 		[
