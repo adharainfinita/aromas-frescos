@@ -17,3 +17,5 @@ export interface IProductForm {
   discontinued?: boolean;
 
 }
+
+export type IProductEditForm = Partial<IProductForm>

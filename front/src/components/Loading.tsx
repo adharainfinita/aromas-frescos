@@ -7,7 +7,7 @@ import { getAllPurchases } from "../services/purchasesServices";
 import { getProducts } from "../redux/features/productsSlice";
 import { getCustomers } from "../redux/features/clientsSlice";
 import { getPurchases } from "../redux/features/purchaseSlice";
-import { AlertTitle } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 
 const Loading: React.FC = () => {
 	const navigate = useNavigate();
@@ -40,7 +40,8 @@ const Loading: React.FC = () => {
 
 	return (
 		<div>
-			<AlertTitle variant="h1">Cargando...🪶🌺🔄🤗</AlertTitle>
+			<Typography variant="h4">Cargando...🪶🌺🔄🤗</Typography>
+			<CircularProgress color="secondary"/>
 		</div>
 	);
 };

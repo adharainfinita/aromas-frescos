@@ -30,10 +30,13 @@ const productsSlice = createSlice({
     },
     setProductDetail: (state, action: PayloadAction<IProduct | null>)=>{
       state.detail = action.payload;
+    },
+    getProductById: (state, action: PayloadAction<IProduct | null>) => {
+      state.detail = action.payload;
     }
   },
   
 });
 
-export const { getProducts, setProductDetail} = productsSlice.actions;
+export const { getProducts, setProductDetail, getProductById} = productsSlice.actions;
 export default productsSlice.reducer;
