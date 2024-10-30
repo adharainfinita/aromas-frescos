@@ -10,3 +10,5 @@ export interface ICustomerForm {
   email?: string;
   phone: string;
 }
+
+export type ICustomerEditForm = Partial<ICustomerForm>;

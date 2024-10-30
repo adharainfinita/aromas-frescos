@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICustomerForm } from "../interfaces/customer";
+import { ICustomerEditForm, ICustomerForm } from "../interfaces/customer";
 const URL_HOST = import.meta.env.VITE_HOST
 
 export const getAllCustomers= async() => {
@@ -20,5 +20,19 @@ export const postCustomer = async (customer: ICustomerForm) => {
 		if (axios.isAxiosError(error)) {
 			errorMessage = error.response?.data?.error || errorMessage;
 		}
+	}
+};
+
+
+export const updateCustomer = async (customer: ICustomerEditForm, id: number) => {
+	try {
+		const response = await axios.put(`${URL_HOST}/customers/${id}`, customer);
+		console.log("respuesta del back: ", response.data);
+		return response.data;
+		
+	} catch (error) {
+		let errorMessage = "An Error ocurred";
+		if (axios.isAxiosError(error))
+			errorMessage = error.response?.data.error || errorMessage;
 	}
 };
