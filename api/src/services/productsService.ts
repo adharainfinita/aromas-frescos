@@ -6,7 +6,7 @@ export interface IProduct {
 	category: string;
 	price: number;
 	available: boolean;
-	discontinued?: boolean;
+	stock: number;
 }
 
 //Función para crear un nuevo producto
@@ -15,14 +15,14 @@ export async function createProduct(product: IProduct) {
   console.log(product);
 	
 	const result = await db.run(
-		`INSERT INTO products (product_name, product_brand, product_category, product_price, product_available, product_discontinued) VALUES(?, ?, ?, ?, ?, ?)`,
+		`INSERT INTO products (product_name, product_brand, product_category, product_price, product_available, product_stock) VALUES(?, ?, ?, ?, ?, ?)`,
 		[
 			product.name,
 			product.brand,
 			product.category,
 			product.price,
 			product.available,
-			product.discontinued || false,
+			product.stock || 0,
 		]
 	);
 	return result.lastID;
@@ -46,10 +46,11 @@ export async function getProductById(productId: number) {
 
 // Función para modificar un producto
 export async function updateProduct(productId: number, product: IProduct) {
+	product.stock === 0 ? product.available = false : true
 	const db = await connectDB();
 	const result = await db.run(
 		`UPDATE products 
-    SET product_name = ?, product_brand = ?, product_category = ?, product_price = ?, product_available = ?, product_discontinued = ?
+    SET product_name = ?, product_brand = ?, product_category = ?, product_price = ?, product_available = ?, product_stock = ?
     WHERE product_id = ?`,
 		[
 			product.name,
@@ -57,7 +58,7 @@ export async function updateProduct(productId: number, product: IProduct) {
 			product.category,
 			product.price,
 			product.available,
-			product.discontinued || false,
+			product.stock,
 			productId,
 		]
 	);

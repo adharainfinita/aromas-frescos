@@ -26,7 +26,7 @@ export async function initDB() {
       product_category TEXT NOT NULL,
       product_price REAL NOT NULL,
       product_available BOOLEAN NOT NULL,
-      product_discontinued BOOLEAN
+      product_stock INTEGER NOT NULL
     );
   `);
 

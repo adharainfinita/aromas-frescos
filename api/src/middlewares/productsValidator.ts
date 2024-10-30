@@ -7,7 +7,7 @@ export const validateCreateProduct = [
   body('category').notEmpty().withMessage('La cateogría es obligatoria'),
   body('price').isFloat({ gt: 0 }).withMessage('El precio debe ser un número mayor a 0'),
   body('available').toBoolean().isBoolean().withMessage('La disponibilidad debe ser un valor booleano (true/false)'),
-  body('discontinued').optional().isBoolean().withMessage('El estado "discontinuado" debe ser un valor booleano')
+  body('stock').withMessage('El estado "stock" debe ser un número => a 0')
 ];
 
 // Validación para actualizar un producto
