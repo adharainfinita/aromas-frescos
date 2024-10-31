@@ -1,10 +1,12 @@
 import axios from "axios";
 import { ICustomerEditForm, ICustomerForm } from "../interfaces/customer";
+import { axiosConfig } from "./productsServices";
 const URL_HOST = import.meta.env.VITE_HOST
+
 
 export const getAllCustomers= async() => {
   try {
-    const response = await axios(`${URL_HOST}/customers`);
+    const response = await axios(`${URL_HOST}/customers`, axiosConfig);
     return response.data;
   } catch (error: any) {
     throw error.message;
@@ -13,7 +15,7 @@ export const getAllCustomers= async() => {
 
 export const postCustomer = async (customer: ICustomerForm) => {
 	try {
-		const response = await axios.post(`${URL_HOST}/customers`, customer);
+		const response = await axios.post(`${URL_HOST}/customers`, customer, axiosConfig);
 		return response.data;
 	} catch (error) {
 		let errorMessage = "An error occurred";
@@ -26,7 +28,7 @@ export const postCustomer = async (customer: ICustomerForm) => {
 
 export const updateCustomer = async (customer: ICustomerEditForm, id: number) => {
 	try {
-		const response = await axios.put(`${URL_HOST}/customers/${id}`, customer);
+		const response = await axios.put(`${URL_HOST}/customers/${id}`, customer, axiosConfig);
 		console.log("respuesta del back: ", response.data);
 		return response.data;
 		
