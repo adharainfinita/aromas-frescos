@@ -62,4 +62,13 @@ export async function updateProduct(productId: number, product: IProduct) {
 		]
 	);
 	return result.changes! > 0; // Retorna true si hubo cambios
+};
+
+
+export async function deleteProductById(productId: number) {
+	const db = await connectDB();
+	const product = await db.run(`DELETE 1 FROM products WHERE product_id = ?`, [
+		productId,
+	]);
+	return product;
 }

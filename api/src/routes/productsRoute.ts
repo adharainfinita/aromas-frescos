@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { validateCreateProduct, validateProductId, validateUpdateProduct } from '../middlewares/productsValidator';
 import { validate } from '../middlewares/validate';
-import { createProduct, getAllProducts, getProductById, updateProduct } from '../services/productsService';
+import { createProduct, deleteProductById, getAllProducts, getProductById, updateProduct } from '../services/productsService';
 
 const router = express.Router();
 
@@ -73,5 +73,25 @@ router.put(
     }
   }
 );
+
+router.delete(
+  '/:id',
+  validateProductId,
+  validate,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const {id} = req.params;
+      const deleted = await deleteProductById(parseInt(id));
+      if (deleted) {
+        res.status(200).json({message: 'Producto eliminado con éxito'});
+      } else {
+        res.status(404).json({message: "Producto no encontrado"});
+      }
+    } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+      res.status(500).json({ error: 'Error al eliminar el producto' });
+    }
+  }
+)
 
 export default router;
