@@ -5,14 +5,27 @@ import customerRoutes from './routes/customersRoute';
 import productsRoute from './routes/productsRoute';
 import purchaseRoute from './routes/purchaseRoute';
 import { initDB } from './db/initDb';
+import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors({
-  origin: 'https://aromas-frescos.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  origin: ['https://aromas-frescos.vercel.app', 'https://c0cd-45-179-73-42.ngrok-free.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }))
+
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  res.cookie('nombreCookie', 'valor', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none'
+  });
+  next();
+});
 
 // Ruta básica
 app.get('/', (_req, res) => {
