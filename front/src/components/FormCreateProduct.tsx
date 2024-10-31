@@ -15,6 +15,7 @@ const FormCreateProduct: React.FC = () => {
 	const [productCategory, setProductCategory] = useState("");
 	const [productPrice, setProductPrice] = useState(0);
 	const [productAvailable, setProductAvailable] = useState(false);
+	const [productStock, setProductStock] = useState(0);
 	const navigate = useNavigate();
 
 	console.log(productAvailable);
@@ -28,6 +29,7 @@ const FormCreateProduct: React.FC = () => {
 			category: productCategory,
 			price: productPrice,
 			available: productAvailable ? true : false,
+			stock: productStock,
 		};
 
 		try {
@@ -97,6 +99,15 @@ const FormCreateProduct: React.FC = () => {
 						/>
 					}
 					label="Disponible"
+				/>
+				<TextField
+					label="Cantidades del Producto"
+					type="number"
+					fullWidth
+					margin="normal"
+					value={productStock}
+					onChange={(event) => setProductStock(Number(event.target.value))}
+					required
 				/>
 				<Button variant="contained" color="primary" type="submit">
 					Crear Producto

@@ -23,7 +23,7 @@ const ProductDetail = () => {
 		category: productDetail?.product_category,
 		price: productDetail?.product_price,
 		available: productDetail?.product_available,
-		discontinued: productDetail?.product_discontinued,
+		stock: productDetail?.product_stock
 	});
 
 	// Busca y asigna el producto en detalle
@@ -42,7 +42,7 @@ const ProductDetail = () => {
 			category: productDetail?.product_category,
 			price: productDetail?.product_price,
 			available: productDetail?.product_available,
-			discontinued: productDetail?.product_discontinued,
+			stock: productDetail?.product_stock
 		});
 	}, [productDetail]);
 
@@ -131,6 +131,9 @@ const ProductDetail = () => {
 					</Typography>
 					<Typography variant="body1">
 						Precio: {productDetail.product_price}
+					</Typography>
+					<Typography variant="body1">
+						Stock: {productDetail.product_stock}
 					</Typography>
 					<Button
 						variant="contained"

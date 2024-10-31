@@ -5,7 +5,7 @@ export interface IProduct {
   product_category: string;
   product_price: number;
   product_available: boolean;
-  product_discontinued?: boolean;
+  product_stock: number;
 }
 
 export interface IProductForm {
@@ -14,8 +14,7 @@ export interface IProductForm {
   category: string;
   price: number;
   available: boolean;
-  discontinued?: boolean;
-
+  stock: number;
 }
 
 export type IProductEditForm = Partial<IProductForm>

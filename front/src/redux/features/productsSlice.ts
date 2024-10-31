@@ -17,7 +17,7 @@ const initialState: ProductState = {
     product_category: "",
     product_price: 0,
     product_available: false,
-    product_discontinued: false
+    product_stock: 0,
   }
 }
 

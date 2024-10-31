@@ -22,7 +22,7 @@ export async function createProduct(product: IProduct) {
 			product.category,
 			product.price,
 			product.available,
-			product.stock || 0,
+			product.stock,
 		]
 	);
 	return result.lastID;
@@ -46,7 +46,6 @@ export async function getProductById(productId: number) {
 
 // Función para modificar un producto
 export async function updateProduct(productId: number, product: IProduct) {
-	product.stock === 0 ? product.available = false : true
 	const db = await connectDB();
 	const result = await db.run(
 		`UPDATE products 
