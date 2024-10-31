@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { setCustomerDetail } from "../redux/features/clientsSlice";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, Box } from "@mui/material";
 import { ICustomerEditForm } from "../interfaces/customer";
 import { updateCustomer } from "../services/customersService";
 
@@ -63,7 +63,7 @@ const ClientDetail = () => {
 	}
 
 	return (
-		<div>
+		<Box sx={{ p: 2, backgroundColor: "#6c3483", borderRadius: "4px" }}>
 			<Button
 				variant="contained"
 				size="large"
@@ -73,7 +73,9 @@ const ClientDetail = () => {
 			>
 				🔙
 			</Button>
-			<Typography variant="h4">Detalles del Cliente</Typography>
+			<Typography variant="h4" color="#DAF7A6" gutterBottom>
+				Detalles del Cliente
+			</Typography>
 			{isEditing ? (
 				<>
 					<TextField
@@ -83,6 +85,11 @@ const ClientDetail = () => {
 						onChange={handleChange}
 						fullWidth
 						margin="normal"
+						sx={{
+							"& .MuiInputBase-root": {
+								backgroundColor: "#DAF7A6", // Color de fondo
+							},
+						}}
 					/>
 					<TextField
 						label="Email"
@@ -91,6 +98,11 @@ const ClientDetail = () => {
 						onChange={handleChange}
 						fullWidth
 						margin="normal"
+						sx={{
+							"& .MuiInputBase-root": {
+								backgroundColor: "#DAF7A6", // Color de fondo
+							},
+						}}
 					/>
 					<TextField
 						label="Teléfono"
@@ -99,6 +111,11 @@ const ClientDetail = () => {
 						onChange={handleChange}
 						fullWidth
 						margin="normal"
+						sx={{
+							"& .MuiInputBase-root": {
+								backgroundColor: "#DAF7A6", // Color de fondo
+							},
+						}}
 					/>
 					<Button variant="contained" color="primary" onClick={handleSave}>
 						Guardar Cambios
@@ -106,13 +123,13 @@ const ClientDetail = () => {
 				</>
 			) : (
 				<>
-					<Typography variant="body1">
+					<Typography variant="body1" color="#DAF7A6">
 						Nombre: {clientDetail.customer_name}
 					</Typography>
-					<Typography variant="body1">
+					<Typography variant="body1" color="#DAF7A6">
 						Email: {clientDetail.customer_email}
 					</Typography>
-					<Typography variant="body1">
+					<Typography variant="body1" color="#DAF7A6">
 						Teléfono: {clientDetail.customer_phone}
 					</Typography>
 					<Button
@@ -124,7 +141,7 @@ const ClientDetail = () => {
 					</Button>
 				</>
 			)}
-		</div>
+		</Box>
 	);
 };
 

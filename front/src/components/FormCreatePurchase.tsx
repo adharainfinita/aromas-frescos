@@ -5,6 +5,7 @@ import {
 	Typography,
 	Checkbox,
 	FormControlLabel,
+	Alert,
 } from "@mui/material";
 import { createPurchase } from "../services/purchasesServices";
 import { useNavigate } from "react-router-dom";
@@ -59,9 +60,10 @@ const FormCreatePurchase: React.FC = () => {
 
 		try {
 			await createPurchase(newPurchase);
+			<Alert severity="success">Compra generada con éxito</Alert>
 			navigate("/");
-		} catch (error) {
-			console.error("Error al crear la compra:", error);
+		} catch (error:any) {
+			<Alert severity="error">"Error al crear la compra:" + {error}</Alert>
 		}
 	};
 

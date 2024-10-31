@@ -7,7 +7,7 @@ import { getAllPurchases } from "../services/purchasesServices";
 import { getProducts } from "../redux/features/productsSlice";
 import { getCustomers } from "../redux/features/clientsSlice";
 import { getPurchases } from "../redux/features/purchaseSlice";
-import { CircularProgress, Typography } from "@mui/material";
+import { Alert, CircularProgress, Typography } from "@mui/material";
 
 const Loading: React.FC = () => {
 	const navigate = useNavigate();
@@ -29,8 +29,10 @@ const Loading: React.FC = () => {
 				if (resposnePurchase) {
 					dispatch(getPurchases(resposnePurchase));
 				}
-			} catch (error) {
-				console.error("Error al obtener los productos o clientes:", error);
+			} catch (error: any) {
+				<Alert variant="filled" severity="error">
+					Ocurrió un error con el servidor: {error}
+				</Alert>;
 			}
 		};
 
@@ -41,7 +43,7 @@ const Loading: React.FC = () => {
 	return (
 		<div>
 			<Typography variant="h4">Cargando...🪶🌺🔄🤗</Typography>
-			<CircularProgress color="secondary"/>
+			<CircularProgress color="secondary" />
 		</div>
 	);
 };

@@ -4,6 +4,7 @@ import {
 	ListItem,
 	ListItemText,
 	Typography,
+	Box,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -16,12 +17,11 @@ const Dashboard = () => {
 		(state: RootState) => state.purchases.purchases
 	);
 	const navigate = useNavigate();
-	// Mapeo de customer_id a customer_name
+
 	const customerMap = new Map(
 		customers.map((customer) => [customer.customer_id, customer.customer_name])
 	);
 
-	// Renderiza la lista de clientes
 	const customerListItems =
 		customers.length > 0 ? (
 			customers.map((customer) => (
@@ -31,23 +31,29 @@ const Dashboard = () => {
 				</ListItem>
 			))
 		) : (
-			<Typography>No hay clientes disponibles</Typography>
+			<Typography color="#FF5733">No hay clientes disponibles</Typography>
 		);
 
-	// Renderiza la lista de productos
 	const productListItems =
 		products.length > 0 ? (
 			products.map((product) => (
 				<ListItem key={product.product_id}>
-					<ListItemText primary={product.product_name} />
+					<ListItemText
+						primary={product.product_name}
+						primaryTypographyProps={{
+							sx: {
+								color: "#DAF7A6", // Cambia el color según tu paleta
+								fontWeight: "bold", // Aplica negrita o cualquier otro estilo
+							},
+						}}
+					/>
 					<Link to={`/product/${product.product_id}`}>Abrir</Link>
 				</ListItem>
 			))
 		) : (
-			<Typography>No hay productos disponibles</Typography>
+			<Typography color="#FF5733">No hay productos disponibles</Typography>
 		);
 
-	// Renderiza la lista de compras
 	const purchaseListItems = purchases.map((purchase) => {
 		const customerName =
 			customerMap.get(purchase.customer_id) || "Cliente desconocido";
@@ -67,8 +73,7 @@ const Dashboard = () => {
 	const handleSubmit = (event: string) => () => {
 		if (event === "product") {
 			navigate("/createProduct");
-		}
-		if (event === "customer") {
+		} else if (event === "customer") {
 			navigate("/createCustomer");
 		} else if (event === "purchase") {
 			navigate("/createPurchase");
@@ -76,40 +81,76 @@ const Dashboard = () => {
 	};
 
 	return (
-		<div>
-			<Typography variant="h4">Dashboard</Typography>
-
-			<Typography variant="h6">Clientes</Typography>
-			<List>
-				{customerListItems}
+		<Box sx={{ padding: 2 }}>
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					bgcolor: "#922b21",
+					p: 2,
+					borderRadius: 2,
+					mb: 2,
+				}}
+			>
+				<Typography variant="h6" color="#DAF7A6">
+					Clientes
+				</Typography>
 				<Button
 					variant="contained"
-					style={{ marginRight: "10px" }}
 					onClick={handleSubmit("customer")}
+					sx={{ bgcolor: "#4a235a" }}
 				>
 					Agregar Cliente
 				</Button>
-			</List>
+			</Box>
+			<List>{customerListItems}</List>
 
-			<Typography variant="h6">Productos</Typography>
-			<List>
-				{productListItems}
-				<Button variant="contained" onClick={handleSubmit("product")}>
-					Agregar Producto
-				</Button>
-			</List>
-			<Typography variant="h6">Compras</Typography>
-			<List>
-				{purchaseListItems}
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					bgcolor: "#922b21",
+					p: 2,
+					borderRadius: 2,
+					mb: 2,
+				}}
+			>
+				<Typography variant="h6" color="#DAF7A6" style={{margin:"2%"}}>
+					Productos
+				</Typography>
 				<Button
 					variant="contained"
-					style={{ marginRight: "10px" }}
-					onClick={handleSubmit("purchase")}
+					onClick={handleSubmit("product")}
+					sx={{ bgcolor: "#4a235a" }}
 				>
-					Crear comprar
+					Agregar Producto
 				</Button>
-			</List>
-		</div>
+			</Box>
+			<List>{productListItems}</List>
+
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					bgcolor: "#5b2c6f",
+					p: 2,
+					borderRadius: 2,
+					mb: 2,
+				}}
+			>
+				<Typography variant="h6" color="#DAF7A6">
+					Compras
+				</Typography>
+				<Button
+					variant="contained"
+					onClick={handleSubmit("purchase")}
+					sx={{ bgcolor: "#4a235a" }}
+				>
+					Crear compra
+				</Button>
+			</Box>
+			<List>{purchaseListItems}</List>
+		</Box>
 	);
 };
 

@@ -5,6 +5,7 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Typography,
+	Alert,
 } from "@mui/material";
 import { postProduct } from "../services/productsServices";
 import { useNavigate } from "react-router-dom";
@@ -34,11 +35,10 @@ const FormCreateProduct: React.FC = () => {
 
 		try {
 			await postProduct(newProduct);
-			alert("Producto creado con éxito");
+		<Alert severity="success">Producto creado con éxito</Alert>
 			navigate("/"); // Redirige al dashboard u otra vista tras crear el producto
-		} catch (error) {
-			console.error("Error al crear el producto:", error);
-			alert("Error al crear el producto");
+		} catch (error:any) {
+			<Alert severity="error">Error al crear el producto: + {error}</Alert>
 		}
 	};
 

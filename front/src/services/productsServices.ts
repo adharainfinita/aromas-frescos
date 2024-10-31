@@ -1,37 +1,57 @@
 import axios from "axios";
-import {IProductEditForm, IProductForm } from "../interfaces/product";
+import { IProductEditForm, IProductForm } from "../interfaces/product";
+
 const URL_HOST = import.meta.env.VITE_HOST;
 
+// Servicio para obtener todos los productos
 export const getAllProducts = async () => {
 	try {
 		const response = await axios(`${URL_HOST}/products`);
 		return response.data;
 	} catch (error: any) {
-		throw error.message;
+		const errorMessage = axios.isAxiosError(error) 
+			? error.response?.data?.error || "An error occurred while fetching products."
+			: "An unexpected error occurred.";
+		throw new Error(errorMessage);
 	}
 };
 
+// Servicio para crear un nuevo producto
 export const postProduct = async (product: IProductForm) => {
 	try {
 		const response = await axios.post(`${URL_HOST}/products`, product);
 		return response.data;
-	} catch (error) {
-		let errorMessage = "An error occurred";
-		if (axios.isAxiosError(error)) {
-			errorMessage = error.response?.data?.error || errorMessage;
-		}
+	} catch (error: any) {
+		const errorMessage = axios.isAxiosError(error) 
+			? error.response?.data?.error || "An error occurred while creating the product."
+			: "An unexpected error occurred.";
+		throw new Error(errorMessage);
 	}
 };
 
+// Servicio para actualizar un producto
 export const updateProduct = async (product: IProductEditForm, id: number) => {
 	try {
 		const response = await axios.put(`${URL_HOST}/products/${id}`, product);
 		console.log("respuesta del back: ", response.data);
 		return response.data;
-		
-	} catch (error) {
-		let errorMessage = "An Error ocurred";
-		if (axios.isAxiosError(error))
-			errorMessage = error.response?.data.error || errorMessage;
+	} catch (error: any) {
+		const errorMessage = axios.isAxiosError(error) 
+			? error.response?.data?.error || "An error occurred while updating the product."
+			: "An unexpected error occurred.";
+		throw new Error(errorMessage);
+	}
+};
+
+// Servicio para eliminar un producto
+export const deleteProduct = async (id: number) => {
+	try {
+		const response = await axios.delete(`${URL_HOST}/products/${id}`);
+		return response.data;
+	} catch (error: any) {
+		const errorMessage = axios.isAxiosError(error) 
+			? error.response?.data?.error || "An error occurred while deleting the product."
+			: "An unexpected error occurred.";
+		throw new Error(errorMessage);
 	}
 };

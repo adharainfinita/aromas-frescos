@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Alert } from "@mui/material";
 import { postCustomer } from "../services/customersService";
 import { useNavigate } from "react-router-dom";
 
@@ -20,11 +20,10 @@ const FormCreateCustomer: React.FC = () => {
 
 		try {
 			await postCustomer(newCustomer);
-			alert("Cliente creado con éxito");
+			<Alert severity="success">Cliente creado con éxito</Alert>
 			navigate("/"); // Redirige al dashboard u otra vista tras crear el producto
-		} catch (error) {
-			console.error("Error al crear el cliente:", error);
-			alert("Error al crear el cliente");
+		} catch (error:any) {
+			<Alert severity="error">Error al crear el cliente + {error}</Alert>;
 		}
 	};
 
