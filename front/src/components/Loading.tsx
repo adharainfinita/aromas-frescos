@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getAllProducts } from "../services/productsServices";
@@ -11,39 +11,56 @@ import { Alert, CircularProgress, Typography } from "@mui/material";
 
 const Loading: React.FC = () => {
 	const navigate = useNavigate();
-
 	const dispatch = useDispatch();
+
+	// Estado para el manejo de errores y estado de carga
+	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchProductsAndClients = async () => {
 			try {
 				const responseProduct = await getAllProducts();
 				const responseCustomer = await getAllCustomers();
-				const resposnePurchase = await getAllPurchases();
-				if (responseProduct) {
+				const responsePurchase = await getAllPurchases();
+
+				if (Array.isArray(responseProduct)) {
 					dispatch(getProducts(responseProduct));
 				}
-				if (responseCustomer) {
+				if (Array.isArray(responseCustomer)) {
 					dispatch(getCustomers(responseCustomer));
 				}
-				if (resposnePurchase) {
-					dispatch(getPurchases(resposnePurchase));
+				if (Array.isArray(responsePurchase)) {
+					dispatch(getPurchases(responsePurchase));
 				}
+
+				setIsLoading(false); // Carga completada
 			} catch (error: any) {
-				<Alert variant="filled" severity="error">
-					Ocurrió un error con el servidor: {error}
-				</Alert>;
+				setError("Ocurrió un error con el servidor. Por favor, intenta de nuevo.");
+				setIsLoading(false);
 			}
 		};
 
 		fetchProductsAndClients();
 	}, [dispatch]);
-	setTimeout(() => navigate("/dashboard"), 1000);
+
+	// Redirigir al dashboard solo cuando la carga está completa y no hay errores
+	useEffect(() => {
+		if (!isLoading && !error) {
+			navigate("/dashboard");
+		}
+	}, [isLoading, error, navigate]);
 
 	return (
 		<div>
 			<Typography variant="h4">Cargando...🪶🌺🔄🤗</Typography>
-			<CircularProgress color="secondary" />
+			{error ? (
+				<Alert variant="filled" severity="error">
+					{error}
+				</Alert>
+			) : (
+				<CircularProgress color="secondary" />
+			)}
 		</div>
 	);
 };
