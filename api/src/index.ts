@@ -7,11 +7,15 @@ import purchaseRoute from './routes/purchaseRoute';
 import { initDB } from './db/initDb';
 import cookieParser from 'cookie-parser';
 
+
 const app: Application = express();
+
+const PORT = process.env.PORT;
+
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors({
-  origin: ['https://aromas-frescos.vercel.app', 'https://c0cd-45-179-73-42.ngrok-free.app'],
+  origin: 'https://aromas-frescos.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }))
@@ -45,8 +49,8 @@ if (process.env.NODE_ENV !== 'test') {
     console.log('Base de datos inicializada correctamente');
 
     // Iniciar servidor
-    app.listen(3000, '0.0.0.0', () => {
-      console.log(`Servidor corriendo en el puerto ${3000
+    app.listen(PORT || 3000, () => {
+      console.log(`Servidor corriendo en el puerto ${PORT
       }`);
     });
   }).catch(err => {
