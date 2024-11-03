@@ -2,7 +2,7 @@ import pkg from 'pg';
 const { Pool } = pkg;
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_PUBLIC_URL
 //  user: process.env.PGUSER,            // Cambia esto por tu usuario de PostgreSQL
   //host: process.env.PGHOST,              // Cambia esto si usas otro host
   //database: process.env.PGDATABASE,  // Cambia esto por el nombre de tu base de datos
