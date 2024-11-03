@@ -49,9 +49,10 @@ export async function initDB() {
         price_per_unit REAL NOT NULL
       );
     `);
-
+    await db.query('COMMIT');
     console.log('Base de datos conectada y tablas creadas en PostgreSQL');
   } catch (error) {
+    await db.query('ROLLBACK')
     console.error('Error al inicializar la base de datos:', error);
   } finally {
     db.release(); // Libera la conexión de la base de datos

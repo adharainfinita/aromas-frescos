@@ -6,6 +6,7 @@ import productsRoute from './routes/productsRoute.js';
 import purchaseRoute from './routes/purchaseRoute.js';
 import { initDB } from './db/initDb.js';
 import cookieParser from 'cookie-parser';
+import { log } from 'console';
 
 
 const app: Application = express();
@@ -46,8 +47,7 @@ export default app;
 if (process.env.NODE_ENV !== 'test') {
   // Iniciar la base de datos
   initDB().then(() => {
-    console.log('Base de datos inicializada correctamente');
-
+    
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en el puerto ${PORT
