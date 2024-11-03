@@ -1,16 +1,16 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors'
-import customerRoutes from './routes/customersRoute';
-import productsRoute from './routes/productsRoute';
-import purchaseRoute from './routes/purchaseRoute';
-import { initDB } from './db/initDb';
+import customerRoute from './routes/customersRoute.js';
+import productsRoute from './routes/productsRoute.js';
+import purchaseRoute from './routes/purchaseRoute.js';
+import { initDB } from './db/initDb.js';
 import cookieParser from 'cookie-parser';
 
 
 const app: Application = express();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -37,7 +37,7 @@ app.get('/', (_req, res) => {
 });
 
 // Montar rutas
-app.use('/api/customers', customerRoutes);
+app.use('/api/customers', customerRoute);
 app.use('/api/products', productsRoute);
 app.use('/api/purchase', purchaseRoute);
 
@@ -49,7 +49,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log('Base de datos inicializada correctamente');
 
     // Iniciar servidor
-    app.listen(PORT || 3000, () => {
+    app.listen(PORT, () => {
       console.log(`Servidor corriendo en el puerto ${PORT
       }`);
     });

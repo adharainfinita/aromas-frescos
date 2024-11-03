@@ -1,4 +1,4 @@
-import { connectDB } from './db';
+import { connectDB } from './db.js';
 
 export async function initDB() {
   const db = await connectDB();

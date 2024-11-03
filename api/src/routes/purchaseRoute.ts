@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import { createPurchase, getAllPurchases, getPurchaseById, updatePurchase } from '../services/purchaseService';
-import { validateCreatePurchase, validatePurchaseId } from '../middlewares/purchaseValidator';
-import { validate } from '../middlewares/validate';
+import { createPurchase, getAllPurchases, getPurchaseById, updatePurchase } from '../services/purchaseService.js';
+import { validateCreatePurchase, validatePurchaseId } from '../middlewares/purchaseValidator.js';
+import { validate } from '../middlewares/validate.js';
 
 const router = express.Router();
 

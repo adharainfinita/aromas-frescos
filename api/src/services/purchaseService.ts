@@ -1,4 +1,4 @@
-import { connectDB } from "../db/db";
+import { connectDB } from "../db/db.js";
 
 export interface IPurchase {
 	customerId: number;

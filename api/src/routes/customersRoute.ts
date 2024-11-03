@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import { validateCreateCustomer, validateCustomerId, validateUpdateCustomer } from '../middlewares/customersValidator';
-import { validate } from '../middlewares/validate';
-import { createCustomer, getAllCustomers, getCustomerById, updateCustomer } from '../services/customersService';
+import { validateCreateCustomer, validateCustomerId, validateUpdateCustomer } from '../middlewares/customersValidator.js';
+import { validate } from '../middlewares/validate.js';
+import { createCustomer, getAllCustomers, getCustomerById, updateCustomer } from '../services/customersService.js';
 
 const router = express.Router();
 
