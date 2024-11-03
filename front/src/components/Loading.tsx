@@ -10,59 +10,76 @@ import { getPurchases } from "../redux/features/purchaseSlice";
 import { Alert, CircularProgress, Typography } from "@mui/material";
 
 const Loading: React.FC = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-	// Estado para el manejo de errores y estado de carga
-	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+    // Estado para el manejo de errores y estado de carga
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		const fetchProductsAndClients = async () => {
-			try {
-				const responseProduct = await getAllProducts();
-				const responseCustomer = await getAllCustomers();
-				const responsePurchase = await getAllPurchases();
+    useEffect(() => {
+        const fetchProductsAndClients = async () => {
+            try {
+                const [responseProduct, responseCustomer, responsePurchase] = await Promise.all([
+                    getAllProducts(),
+                    getAllCustomers(),
+                    getAllPurchases()
+                ]);
 
-				if (Array.isArray(responseProduct)) {
-					dispatch(getProducts(responseProduct));
-				}
-				if (Array.isArray(responseCustomer)) {
-					dispatch(getCustomers(responseCustomer));
-				}
-				if (Array.isArray(responsePurchase)) {
-					dispatch(getPurchases(responsePurchase));
-				}
+                // Dispatch solo si hay datos
+                if (Array.isArray(responseProduct)) {
+                    dispatch(getProducts(responseProduct)); // Se puede despachar un array vacío
+                } else {
+                    // Si no es un array, lanzar un error
+                    throw new Error("El formato de respuesta de productos no es un array");
+                }
 
-				setIsLoading(false); // Carga completada
-			} catch (error: any) {
-				setError("Ocurrió un error con el servidor. Por favor, intenta de nuevo.");
-				setIsLoading(false);
-			}
-		};
+                if (Array.isArray(responseCustomer)) {
+                    dispatch(getCustomers(responseCustomer));
+                } else {
+                    throw new Error("El formato de respuesta de clientes no es un array");
+                }
 
-		fetchProductsAndClients();
-	}, [dispatch]);
+                if (Array.isArray(responsePurchase)) {
+                    dispatch(getPurchases(responsePurchase));
+                } else {
+                    throw new Error("El formato de respuesta de compras no es un array");
+                }
 
-	// Redirigir al dashboard solo cuando la carga está completa y no hay errores
-	useEffect(() => {
-		if (!isLoading && !error) {
-			navigate("/dashboard");
-		}
-	}, [isLoading, error, navigate]);
+                setIsLoading(false); // Carga completada
+            } catch (error: any) {
+                console.error("Error en la carga:", error);
+                // Solo establece error si es un error que se puede manejar
+                setError(error.message || "Ocurrió un error con el servidor. Por favor, intenta de nuevo.");
+                setIsLoading(false);
+            }
+        };
 
-	return (
-		<div>
-			<Typography variant="h4">Cargando...🪶🌺🔄🤗</Typography>
-			{error ? (
-				<Alert variant="filled" severity="error">
-					{error}
-				</Alert>
-			) : (
-				<CircularProgress color="secondary" />
-			)}
-		</div>
-	);
+        fetchProductsAndClients();
+    }, [dispatch]);
+
+    // Redirigir al dashboard solo cuando la carga está completa
+    useEffect(() => {
+        if (!isLoading) {
+         
+                // Redirigir al dashboard si no hay errores
+                navigate("/dashboard");
+            // Si hay un error, se mostrará en la interfaz sin redirigir
+        }
+    }, [isLoading, navigate]);
+
+    return (
+        <div>
+            <Typography variant="h4">Cargando...🪶🌺🔄🤗</Typography>
+            {error ? (
+                <Alert variant="filled" severity="error">
+                    {error}
+                </Alert>
+            ) : (
+                <CircularProgress color="secondary" />
+            )}
+        </div>
+    );
 };
 
 export default Loading;

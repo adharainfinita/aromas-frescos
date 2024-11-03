@@ -17,10 +17,13 @@ export const postCustomer = async (customer: ICustomerForm) => {
 	try {
 		const response = await axios.post(`${URL_HOST}/customers`, customer, axiosConfig);
 		return response.data;
-	} catch (error) {
-		let errorMessage = "An error occurred";
+	} catch (error:any) {
 		if (axios.isAxiosError(error)) {
-			errorMessage = error.response?.data?.error || errorMessage;
+			const statusCode = error.response?.status;
+			const errorMessage = error.response?.data?.error || "An error ocurred while fetching customers";
+			throw new Error(`Error ${statusCode}: ${errorMessage}`)
+		} else {
+			throw new Error("An unexpected error occurred.");
 		}
 	}
 };

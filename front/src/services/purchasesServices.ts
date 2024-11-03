@@ -9,7 +9,15 @@ export const getAllPurchases = async () => {
 		const response = await axios(`${URL_HOST}/purchase`, axiosConfig);
 		return response.data;
 	} catch (error: any) {
-		throw error.message;
+		if (axios.isAxiosError(error)) {
+			const statusCode = error.response?.status; // Obtiene el código de estado
+			const errorMessage = error.response?.data?.error || "An error occurred while fetching purchases.";
+			// Lanzar un nuevo error con el código de estado incluido en el mensaje
+			throw new Error(`Error ${statusCode}: ${errorMessage}`);
+	} else {
+			// Si no es un error de Axios, lanzar un error genérico
+			throw new Error("An unexpected error occurred.");
+	}
 	}
 };
 
