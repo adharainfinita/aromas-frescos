@@ -26,7 +26,7 @@ function App() {
 				p={2} // Padding alrededor del título
 			>
 				<Typography variant="h4" color="white" gutterBottom>
-					Dashboard
+					Aromas Frescos / Base de Datos
 				</Typography>
 			</Box>
 			<Routes>
