@@ -26,7 +26,15 @@ const Dashboard = () => {
 		customers.length > 0 ? (
 			customers.map((customer) => (
 				<ListItem key={customer.customer_id}>
-					<ListItemText primary={customer.customer_name} />
+					<ListItemText 
+					primary={customer.customer_name}
+					primaryTypographyProps={{
+						sx: {
+							color: "#DAF7A6",
+							fontWeight: "bold"
+						}
+					}}
+					/>
 					<Link to={`/client/${customer.customer_id}`}>Abrir</Link>
 				</ListItem>
 			))

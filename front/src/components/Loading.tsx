@@ -25,26 +25,11 @@ const Loading: React.FC = () => {
                     getAllCustomers(),
                     getAllPurchases()
                 ]);
-
-                // Dispatch solo si hay datos
-                if (Array.isArray(responseProduct)) {
-                    dispatch(getProducts(responseProduct)); // Se puede despachar un array vacío
-                } else {
-                    // Si no es un array, lanzar un error
-                    throw new Error("El formato de respuesta de productos no es un array");
-                }
-
-                if (Array.isArray(responseCustomer)) {
-                    dispatch(getCustomers(responseCustomer));
-                } else {
-                    throw new Error("El formato de respuesta de clientes no es un array");
-                }
-
-                if (Array.isArray(responsePurchase)) {
-                    dispatch(getPurchases(responsePurchase));
-                } else {
-                    throw new Error("El formato de respuesta de compras no es un array");
-                }
+                console.log(responseCustomer, responseProduct);
+                
+                dispatch(getProducts(responseProduct)); // Se puede despachar un array vacío
+                dispatch(getCustomers(responseCustomer));
+                dispatch(getPurchases(responsePurchase));
 
                 setIsLoading(false); // Carga completada
             } catch (error: any) {
