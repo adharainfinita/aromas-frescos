@@ -68,10 +68,11 @@ const FormCreatePurchase: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<div style={{background: '#F075AA', margin: '3%', borderRadius: '3%', padding: '3%'}}>
 			<Button
 				variant="contained"
 				size="large"
+				color="inherit"
 				onClick={() => {
 					navigate("/");
 				}}
@@ -155,7 +156,7 @@ const FormCreatePurchase: React.FC = () => {
 				<Button
 					variant="contained"
 					type="submit"
-					color="primary"
+					color="secondary"
 					style={{ marginTop: "20px" }}
 				>
 					Agregar Compra

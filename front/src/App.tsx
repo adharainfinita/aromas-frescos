@@ -17,16 +17,16 @@ function App() {
 			alignItems="center" // Alinea horizontalmente
 			justifyContent="center" // Alinea verticalmente
 			minHeight="100vh" // Asegura que ocupa todo el alto de la pantalla
-			bgcolor=" #1c2833 " // Puedes cambiar el color de fondo aquí
+			bgcolor=" #ADD899" // Puedes cambiar el color de fondo aquí
 		>
 			<CssBaseline />
 			<Box
 				width="100%" // Ocupa todo el ancho
-				bgcolor=" #7d3c98 " // Color de fondo del contenedor
+				bgcolor=" #FFDE95" // Color de fondo del contenedor
 				p={2} // Padding alrededor del título
 			>
-				<Typography variant="h4" color="white" gutterBottom>
-					Aromas Frescos / Base de Datos
+				<Typography variant="h4" color="#434d3e" gutterBottom>
+					Aromas Frescos | Base de Datos
 				</Typography>
 			</Box>
 			<Routes>

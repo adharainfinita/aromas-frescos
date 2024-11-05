@@ -30,7 +30,7 @@ const Dashboard = () => {
 					primary={customer.customer_name}
 					primaryTypographyProps={{
 						sx: {
-							color: "#DAF7A6",
+							color: "#191c18",
 							fontWeight: "bold"
 						}
 					}}
@@ -94,7 +94,7 @@ const Dashboard = () => {
 				sx={{
 					display: "flex",
 					justifyContent: "space-between",
-					bgcolor: "#922b21",
+					bgcolor: "#BC5A94",
 					p: 2,
 					borderRadius: 2,
 					mb: 2,
@@ -117,7 +117,7 @@ const Dashboard = () => {
 				sx={{
 					display: "flex",
 					justifyContent: "space-between",
-					bgcolor: "#922b21",
+					bgcolor: "#BC5A94",
 					p: 2,
 					borderRadius: 2,
 					mb: 2,
@@ -140,7 +140,7 @@ const Dashboard = () => {
 				sx={{
 					display: "flex",
 					justifyContent: "space-between",
-					bgcolor: "#5b2c6f",
+					bgcolor: "#BC5A94",
 					p: 2,
 					borderRadius: 2,
 					mb: 2,

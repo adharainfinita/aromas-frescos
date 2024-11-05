@@ -28,10 +28,11 @@ const FormCreateCustomer: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<div style={{background: '#FFDE95', margin: '3%', borderRadius: '3%', padding: '3%'}}>
 			<Button
 				variant="contained"
 				size="large"
+				color="inherit"
 				onClick={() => {
 					navigate("/");
 				}}
@@ -42,11 +43,12 @@ const FormCreateCustomer: React.FC = () => {
 			<Typography variant="h4" gutterBottom>
 				Crear Nuevo cliente
 			</Typography>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} >
 				<TextField
 					label="Nombre del Cliente"
 					fullWidth
 					margin="normal"
+					
 					value={customerName}
 					onChange={(event) => setCustomerName(event.target.value)}
 					required
@@ -67,7 +69,7 @@ const FormCreateCustomer: React.FC = () => {
 					onChange={(event) => setCustomerEmail(event.target.value)}
 				/>
 
-				<Button variant="contained" color="primary" type="submit">
+				<Button variant="contained" color="secondary" type="submit">
 					Crear Cliente
 				</Button>
 			</form>

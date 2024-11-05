@@ -43,10 +43,11 @@ const FormCreateProduct: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<div style={{background: '#ADD899', margin: '3%', borderRadius: '3%', padding: '3%'}}>
 			<Button
 				variant="contained"
 				size="large"
+				color="inherit"
 				onClick={() => {
 					navigate("/");
 				}}
@@ -109,7 +110,7 @@ const FormCreateProduct: React.FC = () => {
 					onChange={(event) => setProductStock(Number(event.target.value))}
 					required
 				/>
-				<Button variant="contained" color="primary" type="submit">
+				<Button variant="contained" color="secondary" type="submit">
 					Crear Producto
 				</Button>
 			</form>
