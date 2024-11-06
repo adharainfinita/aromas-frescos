@@ -6,31 +6,37 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Alert,
+	InputLabel,
+	Select,
+	MenuItem,
+	SelectChangeEvent
 } from "@mui/material";
 import { createPurchase } from "../services/purchasesServices";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
 	PurchaseForm,
 	IdetailsForm,
 	IPurchaseForm,
 } from "../interfaces/purchase";
+import { RootState } from "../redux/store";
 
 const FormCreatePurchase: React.FC = () => {
 	const navigate = useNavigate();
-
+	const customers = useSelector((state: RootState) => state.clients.customers);
+	const products = useSelector((state: RootState) => state.products.products);
 	// Estados para los datos generales de la compra y detalles
 	const [purchaseGeneral, setPurchaseGeneral] = useState<PurchaseForm>({
-		customer_id: 0,
-		amount: 0,
+		customerId: 0,
+		totalAmount: 0,
 		paid: false,
-		paid_date: "",
+		paidDate: "",
 	});
-	const [purchaseDetail, setPurchaseDetail] = useState<IdetailsForm>({
-		purchase_id: 0,
-		product_id: 0,
-		quantity: 0,
-		price_per_unit: 0,
-	});
+	const [purchaseDetails, setPurchaseDetails] = useState<IdetailsForm[]>([]);
+
+	// Estado para mensajes de éxito/error
+	const [error, setError] = useState<string | null>(null);
+	const [success, setSuccess] = useState<string | null>(null);
 
 	// Manejo de cambios en campos de datos generales
 	const handleGeneralChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,34 +47,71 @@ const FormCreatePurchase: React.FC = () => {
 		}));
 	};
 
-	// Manejo de cambios en campos de detalles de la compra
-	const handleDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
-		setPurchaseDetail((prevState) => ({
+	const handleCustomerChange = (event: SelectChangeEvent<number>) => {
+		setPurchaseGeneral((prevState) => ({
 			...prevState,
-			[name]: Number(value),
+			customerId: event.target.value as number,
 		}));
+	};
+
+	const handleProductChange = (index: number, event: SelectChangeEvent<number>) => {
+		setPurchaseDetails((prevDetails) =>
+			prevDetails.map((detail, i) =>
+				i === index ? { ...detail, productId: event.target.value as number } : detail
+			)
+		);
+	};
+
+	// Manejo de cambios en campos de detalles de la compra
+	const handleDetailChange = (
+		index: number,
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		const { name, value } = event.target;
+		setPurchaseDetails((prevDetails) =>
+			prevDetails.map((detail, i) =>
+				i === index ? { ...detail, [name]: Number(value) } : detail
+			)
+		);
+	};
+
+	// Agregar un nuevo detalle de compra
+	const addDetail = () => {
+		setPurchaseDetails([
+			...purchaseDetails,
+			{ productId: 0, quantity: 0, pricePerUnit: 0 },
+		]);
 	};
 
 	// Manejo del envío del formulario
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+
 		const newPurchase: IPurchaseForm = {
 			purchase: purchaseGeneral,
-			details: purchaseDetail,
+			details: purchaseDetails,
 		};
 
 		try {
 			await createPurchase(newPurchase);
-			<Alert severity="success">Compra generada con éxito</Alert>
+			setSuccess("Compra generada con éxito");
+			setError(null);
 			navigate("/");
-		} catch (error:any) {
-			<Alert severity="error">"Error al crear la compra:" + {error}</Alert>
+		} catch (error: any) {
+			setError("Error al crear la compra: " + error.message);
+			setSuccess(null);
 		}
 	};
 
 	return (
-		<div style={{background: '#F075AA', margin: '3%', borderRadius: '3%', padding: '3%'}}>
+		<div
+			style={{
+				background: "#F075AA",
+				margin: "3%",
+				borderRadius: "3%",
+				padding: "3%",
+			}}
+		>
 			<Button
 				variant="contained"
 				size="large"
@@ -81,23 +124,30 @@ const FormCreatePurchase: React.FC = () => {
 			</Button>
 
 			<Typography variant="h4">Crear Compra</Typography>
+			{success && <Alert severity="success">{success}</Alert>}
+			{error && <Alert severity="error">{error}</Alert>}
+
 			<form onSubmit={handleSubmit}>
 				<Typography variant="h6">Datos Generales</Typography>
 
+				<InputLabel>Nombre del Cliente</InputLabel>
+					<Select
+						name="customerId"
+						value={purchaseGeneral.customerId}
+						onChange={handleCustomerChange}
+						label='Cliente'
+					>
+						{customers.map((customer) => (
+							<MenuItem key={customer.customer_id} value={customer.customer_id}>
+								{customer.customer_name}
+							</MenuItem>
+						))}
+					</Select>
 				<TextField
-					label="ID del Cliente"
+					label="Monto Total"
 					type="number"
-					name="customer_id"
-					value={purchaseGeneral.customer_id}
-					onChange={handleGeneralChange}
-					fullWidth
-					margin="normal"
-				/>
-				<TextField
-					label="Monto"
-					type="number"
-					name="amount"
-					value={purchaseGeneral.amount}
+					name="totalAmount"
+					value={purchaseGeneral.totalAmount}
 					onChange={handleGeneralChange}
 					fullWidth
 					margin="normal"
@@ -115,8 +165,8 @@ const FormCreatePurchase: React.FC = () => {
 				<TextField
 					label="Fecha de Pago"
 					type="date"
-					name="paid_date"
-					value={purchaseGeneral.paid_date}
+					name="paidDate"
+					value={purchaseGeneral.paidDate}
 					onChange={handleGeneralChange}
 					InputLabelProps={{ shrink: true }}
 					fullWidth
@@ -124,34 +174,49 @@ const FormCreatePurchase: React.FC = () => {
 				/>
 
 				<Typography variant="h6">Detalles de la Compra</Typography>
+				{purchaseDetails.map((detail, index) => (
+					<div key={index}>
+				<Select
+								name="productId"
+								value={detail.productId}
+								onChange={(e) => handleProductChange(index, e)}
+								label='Producto'
+							>
+								{products.map((product) => (
+									<MenuItem key={product.product_id} value={product.product_id}>
+										{product.product_name}
+									</MenuItem>
+								))}
+							</Select>
+						<TextField
+							label="Cantidad"
+							type="number"
+							name="quantity"
+							value={detail.quantity}
+							onChange={(e) => handleDetailChange(index, e)}
+							fullWidth
+							margin="normal"
+						/>
+						<TextField
+							label="Precio por Unidad"
+							type="number"
+							name="pricePerUnit"
+							value={detail.pricePerUnit}
+							onChange={(e) => handleDetailChange(index, e)}
+							fullWidth
+							margin="normal"
+						/>
+					</div>
+				))}
 
-				<TextField
-					label="ID del Producto"
-					type="number"
-					name="product_id"
-					value={purchaseDetail.product_id}
-					onChange={handleDetailChange}
-					fullWidth
-					margin="normal"
-				/>
-				<TextField
-					label="Cantidad"
-					type="number"
-					name="quantity"
-					value={purchaseDetail.quantity}
-					onChange={handleDetailChange}
-					fullWidth
-					margin="normal"
-				/>
-				<TextField
-					label="Precio por Unidad"
-					type="number"
-					name="price_per_unit"
-					value={purchaseDetail.price_per_unit}
-					onChange={handleDetailChange}
-					fullWidth
-					margin="normal"
-				/>
+				<Button
+					onClick={addDetail}
+					variant="outlined"
+					color="primary"
+					style={{ marginTop: "10px" }}
+				>
+					Agregar Detalle
+				</Button>
 
 				<Button
 					variant="contained"

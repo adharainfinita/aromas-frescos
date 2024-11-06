@@ -73,8 +73,8 @@ const ProductDetail = () => {
 	}
 
 	return (
-		<Box sx={{ p: 2, backgroundColor: "#6c3483", borderRadius: "4px" }}>
-			<Button variant="contained" size="large" onClick={() => navigate("/")}>
+		<Box sx={{ p: 2, backgroundColor: "#BC5A94", borderRadius: "4px" }}>
+			<Button variant="contained" color="inherit" size="large" onClick={() => navigate("/")}>
 				🔙
 			</Button>
 			<Typography variant="h4" color="#DAF7A6" gutterBottom>
@@ -118,7 +118,7 @@ const ProductDetail = () => {
 						margin="normal"
 						sx={{
 							"& .MuiInputBase-root": {
-								backgroundColor: "#DAF7A6", // Color de fondo
+								backgroundColor: "#DAF7A6",
 							},
 						}}
 					/>
@@ -142,20 +142,20 @@ const ProductDetail = () => {
 				</>
 			) : (
 				<>
-					<Typography variant="body1" color="#DAF7A6" style={{borderBottom: '1px dashed whitesmoke'}}>
-						Nombre: {productDetail.product_name}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Nombre: {productDetail.product_name}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6" style={{borderBottom: '1px dashed whitesmoke'}}>
-						Categoría: {productDetail.product_category}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Categoría: {productDetail.product_category}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6" style={{borderBottom: '1px dashed whitesmoke'}}>
-						Marca: {productDetail.product_brand}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Marca: {productDetail.product_brand}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6" style={{borderBottom: '1px dashed whitesmoke', fontWeight: '100'}}>
-						Precio: {productDetail.product_price}
+					<Typography variant="body1" color="#DAF7A6" style={{ margin: '5%'}}>
+					🔸Precio: {productDetail.product_price}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6" style={{borderBottom: '1px dashed whitesmoke'}}>
-						Stock: {productDetail.product_stock}
+					<Typography variant="body1" color="#DAF7A6" style={{ margin: '5%'}}>
+					🔸Stock: {productDetail.product_stock}
 					</Typography>
 					<Button
 						variant="contained"

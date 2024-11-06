@@ -63,9 +63,10 @@ const ClientDetail = () => {
 	}
 
 	return (
-		<Box sx={{ p: 2, backgroundColor: "#6c3483", borderRadius: "4px" }}>
+		<Box sx={{ p: 2, backgroundColor: "#BC5A94", borderRadius: "4px" }}>
 			<Button
 				variant="contained"
+				color="inherit"
 				size="large"
 				onClick={() => {
 					navigate("/");
@@ -123,14 +124,14 @@ const ClientDetail = () => {
 				</>
 			) : (
 				<>
-					<Typography variant="body1" color="#DAF7A6">
-						Nombre: {clientDetail.customer_name}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Nombre: {clientDetail.customer_name}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6">
-						Email: {clientDetail.customer_email}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Email: {clientDetail.customer_email}
 					</Typography>
-					<Typography variant="body1" color="#DAF7A6">
-						Teléfono: {clientDetail.customer_phone}
+					<Typography variant="body1" color="#DAF7A6" style={{margin: '5%'}}>
+					🔸Teléfono: {clientDetail.customer_phone}
 					</Typography>
 					<Button
 						variant="contained"

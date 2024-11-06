@@ -33,6 +33,8 @@ export const getPurchaseById = async (id: number) => {
 export const createPurchase = async (purchase: IPurchaseForm) => {
 	try {
 		const response = await axios.post(`${URL_HOST}/purchase`, purchase, axiosConfig);
+		console.log(response.data);
+		
 		return response.data;
 	} catch (error) {
 		let errorMessage = "An error occurred";

@@ -9,23 +9,27 @@ export interface IPurchase {
 export interface IDetail {
 	details: Array<IDetails>;
 }
+
 export interface IDetails {
+	[x: string]: any;
 	purchase_detail_id: number;
-	purchase_id: number;
-	product_id: number;
+	purchaseId?: number;  // Cambiado a opcional
+	productId: number;
 	quantity: number;
-	price_per_unit: number;
+	pricePerUnit: number;
 }
 
 export interface PurchaseForm {
-	customer_id: number;
-	amount: number;
+	customerId: number;
+	totalAmount: number;
 	paid: boolean;
-	paid_date: string;
+	paidDate: string;
 }
+
+// Hacemos opcional purchaseId para evitar el error en el formulario
 export type IdetailsForm = Omit<IDetails, "purchase_detail_id">;
 
 export interface IPurchaseForm {
 	purchase: PurchaseForm;
-	details: IdetailsForm;
+	details: IdetailsForm[];
 }

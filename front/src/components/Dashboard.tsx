@@ -50,7 +50,7 @@ const Dashboard = () => {
 						primary={product.product_name}
 						primaryTypographyProps={{
 							sx: {
-								color: "#DAF7A6", // Cambia el color según tu paleta
+								color: "#191c18", // Cambia el color según tu paleta
 								fontWeight: "bold", // Aplica negrita o cualquier otro estilo
 							},
 						}}
