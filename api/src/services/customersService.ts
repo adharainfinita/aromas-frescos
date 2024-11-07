@@ -9,6 +9,7 @@ interface ICustomer {
 // Función para crear un nuevo cliente
 export async function createCustomer(customer: ICustomer) {
   const client = await connectDB();
+  if(!customer.email) customer.email = "sincorreo@mail.com"
   try {
     const result = await client.query(
       `INSERT INTO customers (customer_name, customer_email, customer_phone) VALUES ($1, $2, $3) RETURNING customer_id`,
