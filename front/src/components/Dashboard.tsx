@@ -5,13 +5,20 @@ import {
 	ListItemText,
 	Typography,
 	Box,
+	TextField,
+	MenuItem,
+	Checkbox,
+	FormControlLabel
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { Link, useNavigate } from "react-router-dom";
+import { setCategoryFilter, setAvailabilityFilter, selectFilteredAndSortedProducts } from "../redux/features/productsSlice";
+
 
 const Dashboard = () => {
-	const products = useSelector((state: RootState) => state.products.products);
+	const dispatch = useDispatch();
+	const products = useSelector(selectFilteredAndSortedProducts);
 	const customers = useSelector((state: RootState) => state.clients.customers);
 	const purchases = useSelector(
 		(state: RootState) => state.purchases.purchases
@@ -21,6 +28,14 @@ const Dashboard = () => {
 	const customerMap = new Map(
 		customers.map((customer) => [customer.customer_id, customer.customer_name])
 	);
+
+	const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		dispatch(setCategoryFilter(event.target.value as string));
+	};
+
+	const handleAvailabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		dispatch(setAvailabilityFilter(event.target.checked ? true : null));
+	};
 
 	const customerListItems =
 		customers.length > 0 ? (
@@ -90,6 +105,10 @@ const Dashboard = () => {
 
 	return (
 		<Box sx={{ padding: 2 }}>
+			{/* Filtros de productos */}
+			
+
+			{/* Sección de Clientes */}
 			<Box
 				sx={{
 					display: "flex",
@@ -113,6 +132,7 @@ const Dashboard = () => {
 			</Box>
 			<List>{customerListItems}</List>
 
+			{/* Sección de Productos */}
 			<Box
 				sx={{
 					display: "flex",
@@ -123,7 +143,7 @@ const Dashboard = () => {
 					mb: 2,
 				}}
 			>
-				<Typography variant="h6" color="#DAF7A6" style={{margin:"2%"}}>
+				<Typography variant="h6" color="#DAF7A6">
 					Productos
 				</Typography>
 				<Button
@@ -134,8 +154,29 @@ const Dashboard = () => {
 					Agregar Producto
 				</Button>
 			</Box>
+			<Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+				<TextField
+					label="Categoría"
+					select
+					fullWidth
+					value=""
+					onChange={handleCategoryChange}
+				>
+					<MenuItem value="">Todas</MenuItem>
+					{Array.from(new Set(products.map((p) => p.product_category))).map((category) => (
+						<MenuItem key={category} value={category}>
+							{category}
+						</MenuItem>
+					))}
+				</TextField>
+				<FormControlLabel
+					control={<Checkbox onChange={handleAvailabilityChange} />}
+					label="Disponibles"
+				/>
+			</Box>
 			<List>{productListItems}</List>
 
+			{/* Sección de Compras */}
 			<Box
 				sx={{
 					display: "flex",
