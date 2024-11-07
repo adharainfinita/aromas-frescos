@@ -16,36 +16,52 @@ import StoreIcon from "@mui/icons-material/Store";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { Link, useNavigate } from "react-router-dom";
-import {
-	setCategoryFilter,
-	setAvailabilityFilter,
-	selectFilteredAndSortedProducts,
-} from "../redux/features/productsSlice";
+import { setCategoryFilter, setAvailabilityFilter } from '../redux/features/filtersSlice';
+import { IProduct } from "../interfaces/product";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
-	const products = useSelector(selectFilteredAndSortedProducts);
+	const navigate = useNavigate();
+	const products = useSelector((state:RootState)=> state.products.products);
+	const categoryFilter = useSelector((state: RootState) => state.filters.category);
+	const availabilityFilter = useSelector(
+    (state: RootState) => state.filters.availability
+  );
 	const customers = useSelector((state: RootState) => state.clients.customers);
 	const purchases = useSelector(
 		(state: RootState) => state.purchases.purchases
 	);
-	const navigate = useNavigate();
-
 	const customerMap = new Map(
 		customers.map((customer) => [customer.customer_id, customer.customer_name])
 	);
 
-	const handleCategoryChange = (
-		event: React.ChangeEvent<{ value: unknown }>
-	) => {
-		dispatch(setCategoryFilter(event.target.value as string));
-	};
+	const filteredProducts = products.filter((product: IProduct) => {
+    let matchesCategory = true;
+    let matchesAvailability = true;
 
-	const handleAvailabilityChange = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		dispatch(setAvailabilityFilter(event.target.checked ? true : null));
-	};
+    // Filtrado por categoría
+    if (categoryFilter) {
+      matchesCategory = product.product_category === categoryFilter;
+    }
+
+    // Filtrado por disponibilidad
+    if (availabilityFilter !== null) {
+      matchesAvailability = product.product_available === availabilityFilter;
+    }
+
+    return matchesCategory && matchesAvailability;
+  });
+	const handleCategoryChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    dispatch(setCategoryFilter(event.target.value as string));
+  };
+
+  const handleAvailabilityChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(setAvailabilityFilter(event.target.checked ? true : null));
+  };
 
 	const customerListItems =
 		customers.length > 0 ? (
@@ -67,25 +83,7 @@ const Dashboard = () => {
 			<Typography color="#FF5733">No hay clientes disponibles</Typography>
 		);
 
-	const productListItems =
-		products.length > 0 ? (
-			products.map((product) => (
-				<ListItem key={product.product_id}>
-					<ListItemText
-						primary={product.product_name}
-						primaryTypographyProps={{
-							sx: {
-								color: "#191c18", // Cambia el color según tu paleta
-								fontWeight: "bold", // Aplica negrita o cualquier otro estilo
-							},
-						}}
-					/>
-					<Link to={`/product/${product.product_id}`}>Abrir</Link>
-				</ListItem>
-			))
-		) : (
-			<Typography color="#FF5733">No hay productos disponibles</Typography>
-		);
+
 
 	const purchaseListItems = purchases.map((purchase) => {
 		const customerName =
@@ -220,7 +218,7 @@ const Dashboard = () => {
 							label="Categoría"
 							select
 							fullWidth
-							value=""
+							value={categoryFilter || ""}
 							onChange={handleCategoryChange}
 						>
 							<MenuItem value="">Todas</MenuItem>
@@ -233,11 +231,32 @@ const Dashboard = () => {
 							)}
 						</TextField>
 						<FormControlLabel
-							control={<Checkbox onChange={handleAvailabilityChange} />}
+							control={<Checkbox checked={availabilityFilter ?? false} onChange={handleAvailabilityChange} />}
 							label="Disponibles"
 						/>
 					</Box>
-					<List>{productListItems}</List>
+					 {/* Listado de productos filtrados */}
+					 <List>
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ListItem key={product.product_id}>
+              <ListItemText
+                primary={product.product_name}
+                secondary={product.product_price}
+								primaryTypographyProps={{
+									sx: {
+										color: "#191c18", // Cambia el color según tu paleta
+										fontWeight: "bold", // Aplica negrita o cualquier otro estilo
+									},
+								}}
+							/>
+							<Link to={`/product/${product.product_id}`}>Abrir</Link>
+            </ListItem>
+						 ))
+						) : (
+							<Typography color="#FF5733">No hay productos disponibles</Typography>
+						)}
+					</List>
 				</Box>
 			</Box>
 
