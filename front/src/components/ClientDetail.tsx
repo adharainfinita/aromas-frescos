@@ -6,6 +6,7 @@ import { setCustomerDetail } from "../redux/features/clientsSlice";
 import { Button, TextField, Typography, Box } from "@mui/material";
 import { ICustomerEditForm } from "../interfaces/customer";
 import { updateCustomer } from "../services/customersService";
+import Swal from "sweetalert2";
 
 const ClientDetail = () => {
 	const { id } = useParams<{ id: string }>(); // Captura el id del cliente
@@ -50,10 +51,16 @@ const ClientDetail = () => {
 		if (editableCustomer) {
 			try {
 				await updateCustomer(editableCustomer, Number(id));
+				Swal.fire('Éxito', 'al actualizar el cliente', 'success');
 				setIsEditing(false);
 				navigate("/");
-			} catch (error) {
-				console.log("Error al actualizar el cliente: ", error);
+			} catch (error: any) {
+				Swal.fire({
+					title: 'Error!',
+					text: error,
+					icon: 'error',
+					confirmButtonText: 'Continuar'
+				})
 			}
 		}
 	};

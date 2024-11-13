@@ -4,8 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { setProductDetail } from "../redux/features/productsSlice";
 import { Button, Typography, TextField, Box } from "@mui/material";
-import { updateProduct } from "../services/productsServices";
+import { updateProduct, deleteProduct } from "../services/productsServices";
 import { IProductEditForm } from "../interfaces/product";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
 	const navigate = useNavigate();
@@ -61,12 +64,40 @@ const ProductDetail = () => {
 			try {
 				await updateProduct(editableProduct, Number(id));
 				setIsEditing(false); // Sal del modo de edición
+				Swal.fire('Éxito', 'al actualizar el producto', 'success');
 				navigate("/");
-			} catch (error) {
-				console.error("Error al actualizar el producto:", error);
+			} catch (error: any) {
+				Swal.fire({
+					title: 'Error!',
+					text: error,
+					icon: 'error',
+					confirmButtonText: 'Continuar'
+				})
 			}
 		}
 	};
+
+	//Elimina el producto
+	const handleDelete = async(id: number)=>{
+		try {
+			await deleteProduct(id);
+			Swal.fire({
+				title: 'Éxito!',
+				text: 'Producto eliminado con éxito',
+				icon: 'success',
+				confirmButtonText: 'Continuar'
+			})
+			navigate('/');
+		} catch (error: any) {
+			Swal.fire({
+				title: 'Error!',
+				text: error,
+				icon: 'error',
+				confirmButtonText: 'Continuar'
+			})
+			
+		}
+	}
 
 	if (!productDetail) {
 		return <Typography>No se encontró el producto</Typography>;
@@ -197,6 +228,16 @@ const ProductDetail = () => {
 						style={{ margin: "2%", background: "#922b21" }}
 					>
 						Editar
+						<EditIcon/>
+					</Button>
+					<Button 
+					variant="contained"
+					color="secondary"
+					onClick={() => handleDelete(productDetail.product_id)}
+					style={{ margin: "2%", background: "#922b21" }}
+					>
+						Eliminar
+						<DeleteIcon/>
 					</Button>
 				</>
 			)}

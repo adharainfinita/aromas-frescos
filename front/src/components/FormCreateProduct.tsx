@@ -5,10 +5,10 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Typography,
-	Alert,
 } from "@mui/material";
 import { postProduct } from "../services/productsServices";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const FormCreateProduct: React.FC = () => {
 	const [productName, setProductName] = useState("");
@@ -35,10 +35,15 @@ const FormCreateProduct: React.FC = () => {
 
 		try {
 			await postProduct(newProduct);
-		<Alert severity="success">Producto creado con éxito</Alert>
+		Swal.fire('Éxito', 'al crear el producto', 'success')
 			navigate("/"); // Redirige al dashboard u otra vista tras crear el producto
 		} catch (error:any) {
-			<Alert severity="error">Error al crear el producto: + {error}</Alert>
+		Swal.fire({
+			title:'Error!', 
+			text: error,
+			icon: 'error', 
+			confirmButtonText: 'Continuar'
+		})
 		}
 	};
 

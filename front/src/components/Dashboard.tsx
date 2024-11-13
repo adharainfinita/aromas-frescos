@@ -10,14 +10,13 @@ import {
 	Checkbox,
 	FormControlLabel,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ListIcon from "@mui/icons-material/List";
-import StoreIcon from "@mui/icons-material/Store";
+
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { Link, useNavigate } from "react-router-dom";
 import { setCategoryFilter, setAvailabilityFilter } from '../redux/features/filtersSlice';
 import { IProduct } from "../interfaces/product";
+import SliderBar from "./SliderBar";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
@@ -113,47 +112,7 @@ const Dashboard = () => {
 
 	return (
 		<Box sx={{ padding: 2, marginRight:'15%'}}>
-			{/* Contenedor flotante para botones de navegación rápida */}
-			<Box
-				sx={{
-					position: "fixed",
-					bottom: 16,
-					right: 16,
-					padding: 1,
-					display: "flex",
-					flexDirection: "column",
-					gap: 1,
-				}}
-			>
-				{/* Contenedor flotante para los botones de navegación con solo iconos */}
-				<Button
-					variant="contained"
-					color="primary"
-					sx={{ minWidth: "auto", padding: 1 }}
-				>
-					<a href="#clientes" style={{ border: "hidden" }}>
-						<AccountCircleIcon />
-					</a>
-				</Button>
-				<Button
-					variant="contained"
-					color="primary"
-					sx={{ minWidth: "auto", padding: 1 }}
-				>
-					<a href="#productos" style={{ border: "hidden" }}>
-						<ListIcon />
-					</a>
-				</Button>
-				<Button
-					variant="contained"
-					color="primary"
-					sx={{ minWidth: "auto", padding: 1 }}
-				>
-					<a href="#compras" style={{ border: "hidden" }}>
-						<StoreIcon />
-					</a>
-				</Button>
-			</Box>
+			<SliderBar/>
 			{/* Contenedor principal con breakpoints para manejar disposición */}
 			<Box
 				sx={{

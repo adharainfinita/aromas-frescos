@@ -5,7 +5,6 @@ import {
 	Typography,
 	Checkbox,
 	FormControlLabel,
-	Alert,
 	InputLabel,
 	Select,
 	MenuItem,
@@ -20,6 +19,7 @@ import {
 	IPurchaseForm,
 } from "../interfaces/purchase";
 import { RootState } from "../redux/store";
+import Swal from "sweetalert2";
 
 const FormCreatePurchase: React.FC = () => {
 	const navigate = useNavigate();
@@ -33,10 +33,6 @@ const FormCreatePurchase: React.FC = () => {
 		paidDate: "",
 	});
 	const [purchaseDetails, setPurchaseDetails] = useState<IdetailsForm[]>([]);
-
-	// Estado para mensajes de éxito/error
-	const [error, setError] = useState<string | null>(null);
-	const [success, setSuccess] = useState<string | null>(null);
 
 	// Manejo de cambios en campos de datos generales
 	const handleGeneralChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,12 +90,15 @@ const FormCreatePurchase: React.FC = () => {
 
 		try {
 			await createPurchase(newPurchase);
-			setSuccess("Compra generada con éxito");
-			setError(null);
+			Swal.fire('Éxito', 'al guardar la compra', 'success')
 			navigate("/");
 		} catch (error: any) {
-			setError("Error al crear la compra: " + error.message);
-			setSuccess(null);
+			Swal.fire({
+				title:'Error!', 
+				text: error,
+				icon: 'error', 
+				confirmButtonText: 'Continuar'
+			})
 		}
 	};
 
@@ -124,8 +123,6 @@ const FormCreatePurchase: React.FC = () => {
 			</Button>
 
 			<Typography variant="h4">Crear Compra</Typography>
-			{success && <Alert severity="success">{success}</Alert>}
-			{error && <Alert severity="error">{error}</Alert>}
 
 			<form onSubmit={handleSubmit}>
 				<Typography variant="h6">Datos Generales</Typography>

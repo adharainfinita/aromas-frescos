@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Alert } from "@mui/material";
+import { TextField, Button, Typography } from "@mui/material";
 import { postCustomer } from "../services/customersService";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const FormCreateCustomer: React.FC = () => {
 	const [customerName, setCustomerName] = useState("");
@@ -20,10 +21,15 @@ const FormCreateCustomer: React.FC = () => {
 
 		try {
 			await postCustomer(newCustomer);
-			<Alert severity="success">Cliente creado con éxito</Alert>
+			Swal.fire('Éxito', 'al crear el cliente', 'success')
 			navigate("/"); // Redirige al dashboard u otra vista tras crear el producto
 		} catch (error:any) {
-			<Alert severity="error">Error al crear el cliente + {error}</Alert>;
+			Swal.fire({
+				title:'Error!', 
+				text: error,
+				icon: 'error', 
+				confirmButtonText: 'Continuar'
+			})
 		}
 	};
 
