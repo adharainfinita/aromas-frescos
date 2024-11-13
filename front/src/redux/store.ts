@@ -3,14 +3,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import clientsReducer from './features/clientsSlice';
 import productsReducer from './features/productsSlice';
 import purchaseReducer from './features/purchaseSlice';
-import filterReducer from './features/filtersSlice'
 
 export const store = configureStore({
   reducer: {
     clients: clientsReducer,
     products: productsReducer,
-    purchases: purchaseReducer,
-    filters: filterReducer
+    purchases: purchaseReducer
   },
 });
 

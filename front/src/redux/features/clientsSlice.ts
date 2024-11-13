@@ -27,9 +27,26 @@ const customersSlice = createSlice({
     },
     setCustomerDetail: (state, action: PayloadAction<ICustomer | null>) => {
       state.detail = action.payload;
-    }
+    },
+    orderCustomers: (state, action:PayloadAction<string>) =>{
+      const productsCopy = [...state.customers];
+
+        action.payload === "A"
+          ? productsCopy.sort((a, b) => {
+              if (a.customer_name < b.customer_name) return -1;
+              if (a.customer_name > b.customer_name) return 1;
+              return 0;
+            })
+          : productsCopy.sort((a, b) => {
+              if (a.customer_name > b.customer_name) return -1;
+              if (a.customer_name < b.customer_name) return 1;
+              return 0;
+            });
+            
+        state.customers = productsCopy;
+      }
   },
 });
 
-export const { getCustomers, setCustomerDetail } = customersSlice.actions;
+export const { getCustomers, setCustomerDetail, orderCustomers } = customersSlice.actions;
 export default customersSlice.reducer;

@@ -10,57 +10,41 @@ import {
 	Checkbox,
 	FormControlLabel,
 } from "@mui/material";
-
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { Link, useNavigate } from "react-router-dom";
-import { setCategoryFilter, setAvailabilityFilter } from '../redux/features/filtersSlice';
-import { IProduct } from "../interfaces/product";
+import {
+	filterProductsByCategory,
+	filtersProductByAvailable,
+	orderProducts,
+} from "../redux/features/productsSlice";
 import SliderBar from "./SliderBar";
+import { orderCustomers } from "../redux/features/clientsSlice";
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const products = useSelector((state:RootState)=> state.products.products);
-	const categoryFilter = useSelector((state: RootState) => state.filters.category);
-	const availabilityFilter = useSelector(
-    (state: RootState) => state.filters.availability
-  );
+	const products = useSelector((state: RootState) => state.products.products);
 	const customers = useSelector((state: RootState) => state.clients.customers);
-	const purchases = useSelector(
-		(state: RootState) => state.purchases.purchases
-	);
+	const purchases = useSelector((state: RootState) => state.purchases.purchases);
 	const customerMap = new Map(
 		customers.map((customer) => [customer.customer_id, customer.customer_name])
 	);
 
-	const filteredProducts = products.filter((product: IProduct) => {
-    let matchesCategory = true;
-    let matchesAvailability = true;
+	const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		dispatch(filterProductsByCategory(event.target.value as string));
+	};
 
-    // Filtrado por categoría
-    if (categoryFilter) {
-      matchesCategory = product.product_category === categoryFilter;
-    }
+	const handleAvailabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		dispatch(filtersProductByAvailable(event.target.checked ? true : null));
+	};
 
-    // Filtrado por disponibilidad
-    if (availabilityFilter !== null) {
-      matchesAvailability = product.product_available === availabilityFilter;
-    }
-
-    return matchesCategory && matchesAvailability;
-  });
-	const handleCategoryChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    dispatch(setCategoryFilter(event.target.value as string));
-  };
-
-  const handleAvailabilityChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    dispatch(setAvailabilityFilter(event.target.checked ? true : null));
-  };
+	const handleProductOrderChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		dispatch(orderProducts(event.target.value as string));
+	};
+	const handlerCustomerOrderChange = (event: React.ChangeEvent<{value:unknown}>) =>{
+		dispatch(orderCustomers(event.target.value as string));
+	}
 
 	const customerListItems =
 		customers.length > 0 ? (
@@ -81,8 +65,6 @@ const Dashboard = () => {
 		) : (
 			<Typography color="#FF5733">No hay clientes disponibles</Typography>
 		);
-
-
 
 	const purchaseListItems = purchases.map((purchase) => {
 		const customerName =
@@ -111,9 +93,8 @@ const Dashboard = () => {
 	};
 
 	return (
-		<Box sx={{ padding: 2, marginRight:'15%'}}>
-			<SliderBar/>
-			{/* Contenedor principal con breakpoints para manejar disposición */}
+		<Box sx={{ padding: 2, marginRight: "15%" }}>
+			<SliderBar />
 			<Box
 				sx={{
 					display: "flex",
@@ -121,7 +102,6 @@ const Dashboard = () => {
 					gap: 2,
 				}}
 			>
-				{/* Sección Clientes */}
 				<Box sx={{ flex: 1 }}>
 					<Box
 						sx={{
@@ -144,11 +124,20 @@ const Dashboard = () => {
 						>
 							Agregar Cliente
 						</Button>
-					</Box>
+						</Box>
+						<TextField
+							label="Orden"
+							select
+							fullWidth
+							value=""
+							onChange={handlerCustomerOrderChange}
+						>
+							<MenuItem value="A">Ascendente</MenuItem>
+							<MenuItem value="D">Descendente</MenuItem>
+						</TextField>
 					<List>{customerListItems}</List>
 				</Box>
 
-				{/* Sección Productos */}
 				<Box sx={{ flex: 1 }}>
 					<Box
 						sx={{
@@ -177,10 +166,10 @@ const Dashboard = () => {
 							label="Categoría"
 							select
 							fullWidth
-							value={categoryFilter || ""}
+							value={useSelector((state: RootState) => state.products.requireFilters.category) || ""}
 							onChange={handleCategoryChange}
 						>
-							<MenuItem value="">Todas</MenuItem>
+							<MenuItem value="All">Todas</MenuItem>
 							{Array.from(new Set(products.map((p) => p.product_category))).map(
 								(category) => (
 									<MenuItem key={category} value={category}>
@@ -190,36 +179,52 @@ const Dashboard = () => {
 							)}
 						</TextField>
 						<FormControlLabel
-							control={<Checkbox checked={availabilityFilter ?? false} onChange={handleAvailabilityChange} />}
+							control={
+								<Checkbox
+									checked={useSelector((state: RootState) => state.products.requireFilters.availbable) ?? false}
+									onChange={handleAvailabilityChange}
+								/>
+							}
 							label="Disponibles"
 						/>
 					</Box>
-					 {/* Listado de productos filtrados */}
-					 <List>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ListItem key={product.product_id}>
-              <ListItemText
-                primary={product.product_name}
-                secondary={product.product_price}
-								primaryTypographyProps={{
-									sx: {
-										color: "#191c18", // Cambia el color según tu paleta
-										fontWeight: "bold", // Aplica negrita o cualquier otro estilo
-									},
-								}}
-							/>
-							<Link to={`/product/${product.product_id}`}>Abrir</Link>
-            </ListItem>
-						 ))
+						<TextField
+							label="Orden"
+							select
+							fullWidth
+							value=""
+							onChange={handleProductOrderChange}
+						>
+							<MenuItem value="A">Ascendente</MenuItem>
+							<MenuItem value="D">Descendente</MenuItem>
+						</TextField>
+
+					<List>
+						{products.length > 0 ? (
+							products.map((product) => (
+								<ListItem key={product.product_id}>
+									<ListItemText
+										primary={product.product_name}
+										secondary={`Precio: ${product.product_price}`}
+										primaryTypographyProps={{
+											sx: {
+												color: "#191c18",
+												fontWeight: "bold",
+											},
+										}}
+									/>
+									<Link to={`/product/${product.product_id}`}>Abrir</Link>
+								</ListItem>
+							))
 						) : (
-							<Typography color="#FF5733">No hay productos disponibles</Typography>
+							<Typography color="#FF5733">
+								No hay productos disponibles
+							</Typography>
 						)}
 					</List>
 				</Box>
 			</Box>
 
-			{/* Sección Compras - siempre en columna */}
 			<Box sx={{ mt: 3 }}>
 				<Box
 					sx={{
