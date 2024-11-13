@@ -84,7 +84,7 @@ export async function updateProduct(productId: number, product: IProduct) {
 export async function deleteProductById(productId: number) {
 	const db = await connectDB();
 	try {
-		const product = await db.query(`DELETE 1 FROM products WHERE product_id = $1`, [
+		const product = await db.query(`DELETE FROM products WHERE product_id = $1`, [
 		productId,
 	]);
 	return product.rowCount;
