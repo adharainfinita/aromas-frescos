@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import SliderBar from "./SliderBar";
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Products from "./Products";
 import Customers from "./Customers";
 import Purchase from "./Purchases";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Dashboard = () => {
 	const products = useSelector((state: RootState) => state.products.products);
@@ -32,6 +33,12 @@ const Dashboard = () => {
 
 	return (
 		<Box sx={{ padding: 2, marginRight: "15%" }}>
+			<Button 
+			sx={{ bgcolor: "#4a235a" }}
+			onClick={()=>{navigate('/')}}
+			>
+			<RefreshIcon />
+			</Button>
 			<SliderBar />
 			<Box
 				sx={{
