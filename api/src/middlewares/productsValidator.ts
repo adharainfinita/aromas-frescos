@@ -1,4 +1,4 @@
-import { body, check, param } from 'express-validator';
+import { body, param } from 'express-validator';
 
 // Validación para crear un producto
 export const validateCreateProduct = [
@@ -32,17 +32,17 @@ export const validateDeleteProduct = [
 ];
 
 export const validateBulkCreateProducts = [
-  check('*.name').notEmpty().withMessage('El nombre es obligatorio'),
-  check('*.brand').notEmpty().withMessage('La marca es obligatoria'),
-  check('*.category').notEmpty().withMessage('La categoría es obligatoria'),
-  check('*.price')
+  body('*.name').notEmpty().withMessage('El nombre es obligatorio'),
+  body('*.brand').notEmpty().withMessage('La marca es obligatoria'),
+  body('*.category').notEmpty().withMessage('La categoría es obligatoria'),
+  body('*.price')
     .isFloat({ gt: 0 })
     .withMessage('El precio debe ser un número mayor a 0'),
-  check('*.available')
+  body('*.available')
     .toBoolean()
     .isBoolean()
     .withMessage('La disponibilidad debe ser un valor booleano (true/false)'),
-  check('*.stock')
+  body('*.stock')
     .isInt({ min: 0 })
     .withMessage('El stock debe ser un número mayor o igual a 0')
 ]
