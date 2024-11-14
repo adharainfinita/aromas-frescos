@@ -32,17 +32,17 @@ export const validateDeleteProduct = [
 ];
 
 export const validateBulkCreateProducts = [
-  check('*.product_name').notEmpty().withMessage('El nombre es obligatorio'),
-  check('*.product_brand').notEmpty().withMessage('La marca es obligatoria'),
-  check('*.product_category').notEmpty().withMessage('La categoría es obligatoria'),
-  check('*.product_price')
+  check('*.name').notEmpty().withMessage('El nombre es obligatorio'),
+  check('*.brand').notEmpty().withMessage('La marca es obligatoria'),
+  check('*.category').notEmpty().withMessage('La categoría es obligatoria'),
+  check('*.price')
     .isFloat({ gt: 0 })
     .withMessage('El precio debe ser un número mayor a 0'),
-  check('*.product_available')
+  check('*.available')
     .toBoolean()
     .isBoolean()
     .withMessage('La disponibilidad debe ser un valor booleano (true/false)'),
-  check('*.product_stock')
+  check('*.stock')
     .isInt({ min: 0 })
     .withMessage('El stock debe ser un número mayor o igual a 0')
 ]
