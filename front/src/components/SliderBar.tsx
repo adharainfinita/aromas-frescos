@@ -11,8 +11,6 @@ const SliderBar: React.FC = () => {
 	return (
 		<Box
 			sx={{
-        background: '#1A1A1D',
-        borderRadius:"5%",
 				position: "fixed",
 				bottom: 16,
 				right: 16,
