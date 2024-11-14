@@ -5,7 +5,7 @@ import { RootState } from "../redux/store";
 
 
 const Filters:React.FC = () => {
-  const products = useSelector((state: RootState) => state.products.products);
+  const products = useSelector((state: RootState) => state.products.originalCopy);
 	const dispatch = useDispatch();
 
 	const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
