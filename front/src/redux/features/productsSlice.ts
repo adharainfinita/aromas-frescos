@@ -45,9 +45,9 @@ const productsSlice = createSlice({
 			let productsFound: IProduct[] = [...state.originalCopy];
 			state.requireFilters.category = action.payload;
 
-			if (action.payload === "All") state.requireFilters.category = "";
+			if (action.payload === "All") state.requireFilters.category = null;
 			else {
-				productsFound = state.originalCopy.filter(
+				productsFound = productsFound.filter(
 					(match) => match.product_category === action.payload
 				);
 			}
@@ -57,6 +57,7 @@ const productsSlice = createSlice({
 					(match) => match.product_available === state.requireFilters.availbable
 				);
 			}
+			state.products = productsFound;
 		},
 		filtersProductByAvailable: (
 			state,
@@ -65,37 +66,41 @@ const productsSlice = createSlice({
 			let productsFound: IProduct[] = [...state.originalCopy];
 			state.requireFilters.availbable = action.payload;
 
-			productsFound = productsFound.filter(
-				(match) => match.product_available === action.payload
-			);
+			if (action.payload !== null) {
+				productsFound = productsFound.filter(
+					(match) => match.product_available === action.payload
+				);
+			}
 
 			if (state.requireFilters.category) {
 				productsFound = productsFound.filter(
 					(match) => match.product_category === state.requireFilters.category
 				);
 			}
-		},
-    resetFilters:(state, _action: PayloadAction<void>)=>{
-      state.requireFilters = initialState.requireFilters;
-      state.products = state.originalCopy;
-    },
-    orderProducts: (state, action:PayloadAction<string>) =>{
-      const productsCopy = [...state.products];
 
-        action.payload === "A"
-          ? productsCopy.sort((a, b) => {
-              if (a.product_name < b.product_name) return -1;
-              if (a.product_name > b.product_name) return 1;
-              return 0;
-            })
-          : productsCopy.sort((a, b) => {
-              if (a.product_name > b.product_name) return -1;
-              if (a.product_name < b.product_name) return 1;
-              return 0;
-            });
-            
-        state.products = productsCopy;
-      }
+			state.products = productsFound;
+		},
+		resetFilters: (state, _action: PayloadAction<void>) => {
+			state.requireFilters = initialState.requireFilters;
+			state.products = state.originalCopy;
+		},
+		orderProducts: (state, action: PayloadAction<string>) => {
+			const productsCopy = [...state.products];
+
+			action.payload === "A"
+				? productsCopy.sort((a, b) => {
+						if (a.product_name < b.product_name) return -1;
+						if (a.product_name > b.product_name) return 1;
+						return 0;
+				  })
+				: productsCopy.sort((a, b) => {
+						if (a.product_name > b.product_name) return -1;
+						if (a.product_name < b.product_name) return 1;
+						return 0;
+				  });
+
+			state.products = productsCopy;
+		},
 	},
 });
 
@@ -105,8 +110,8 @@ export const {
 	getProductById,
 	filterProductsByCategory,
 	filtersProductByAvailable,
-  resetFilters,
-  orderProducts
+	resetFilters,
+	orderProducts,
 } = productsSlice.actions;
 
 // Selectores
