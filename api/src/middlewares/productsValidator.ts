@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body, check, param } from 'express-validator';
 
 // Validación para crear un producto
 export const validateCreateProduct = [
@@ -30,3 +30,19 @@ export const validateProductId = [
 export const validateDeleteProduct = [
   param('id').isInt().withMessage('El ID del producto debe ser un número entero')
 ];
+
+export const validateBulkCreateProducts = [
+  check('*.product_name').notEmpty().withMessage('El nombre es obligatorio'),
+  check('*.product_brand').notEmpty().withMessage('La marca es obligatoria'),
+  check('*.product_category').notEmpty().withMessage('La categoría es obligatoria'),
+  check('*.product_price')
+    .isFloat({ gt: 0 })
+    .withMessage('El precio debe ser un número mayor a 0'),
+  check('*.product_available')
+    .toBoolean()
+    .isBoolean()
+    .withMessage('La disponibilidad debe ser un valor booleano (true/false)'),
+  check('*.product_stock')
+    .isInt({ min: 0 })
+    .withMessage('El stock debe ser un número mayor o igual a 0')
+]

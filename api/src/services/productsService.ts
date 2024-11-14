@@ -12,20 +12,20 @@ export interface IProduct {
 //Función para crear un nuevo producto
 export async function createProduct(product: IProduct) {
 	const client = await connectDB();
-  console.log(product);
+	console.log(product);
 	try {
 		const result = await client.query(
-		`INSERT INTO products (product_name, product_brand, product_category, product_price, product_available, product_stock) VALUES($1, $2, $3, $4, $5, $6) RETURNING product_id`,
-		[
-			product.name,
-			product.brand,
-			product.category,
-			product.price,
-			product.available,
-			product.stock,
-		]
-	);
-	return result.rows[0].customer_id;
+			`INSERT INTO products (product_name, product_brand, product_category, product_price, product_available, product_stock) VALUES($1, $2, $3, $4, $5, $6) RETURNING product_id`,
+			[
+				product.name,
+				product.brand,
+				product.category,
+				product.price,
+				product.available,
+				product.stock,
+			]
+		);
+		return result.rows[0].customer_id;
 	} finally {
 		client.release();
 	}
@@ -34,7 +34,7 @@ export async function createProduct(product: IProduct) {
 // Función para obtener todos los productos
 export async function getAllProducts() {
 	const client = await connectDB();
-	try{
+	try {
 		const products = await client.query(`SELECT * FROM products`);
 		return products.rows;
 	} finally {
@@ -46,20 +46,20 @@ export async function getAllProducts() {
 export async function getProductById(productId: number) {
 	const client = await connectDB();
 	try {
-	const product = await client.query(`SELECT * FROM products WHERE product_id = $1`, [
-		productId,
-	]);
-	return product.rows[0];
-	} finally{
+		const product = await client.query(
+			`SELECT * FROM products WHERE product_id = $1`,
+			[productId]
+		);
+		return product.rows[0];
+	} finally {
 		client.release();
 	}
-
 }
 
 // Función para modificar un producto
 export async function updateProduct(productId: number, product: IProduct) {
 	const client = await connectDB();
-	try{
+	try {
 		const result = await client.query(
 			`UPDATE products 
 			SET product_name = $1, product_brand = $2, product_category = $3, product_price = $4, product_available = $5, product_stock = $6
@@ -74,22 +74,43 @@ export async function updateProduct(productId: number, product: IProduct) {
 				productId,
 			]
 		);
-		return result.rowCount; // Retorna true si hubo cambios	
+		return result.rowCount; // Retorna true si hubo cambios
 	} finally {
 		client.release();
 	}
-	};
-
+}
 
 export async function deleteProductById(productId: number) {
 	const db = await connectDB();
 	try {
-		const product = await db.query(`DELETE FROM products WHERE product_id = $1`, [
-		productId,
-	]);
-	return product.rowCount;
-	}finally{
+		const product = await db.query(
+			`DELETE FROM products WHERE product_id = $1`,
+			[productId]
+		);
+		return product.rowCount;
+	} finally {
 		db.release();
 	}
-	
+}
+
+export async function bulkCreateProducts(products: IProduct[]) {
+	const db = await connectDB();
+
+	try {
+		await db.query("BEGIN");
+
+		const insertPromises = products.map((product) => {
+			const { name, brand, category, price, available, stock } = product;
+			return db.query(
+				`
+					INSERT INTO products(product_name, product_brand, product_category, product_price, product_available, product_stock) VALUES ($1, $2, $3, $4, $5, $6)
+				`,
+				[name, brand, category, price, available, stock]
+			);
+		});
+		await Promise.all(insertPromises);
+		await db.query("COMMIT");
+	} finally {
+		db.release();
+	}
 }
