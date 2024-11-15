@@ -37,7 +37,7 @@ const Filters: React.FC = () => {
 	};
 	return (
 		<Box>
-			<Box sx={{ display: "flex", overflowWrap: "break-word", gap: 2, mb: 3 }}>
+			<Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 3 }}>
 				<TextField
 					label="Categoría"
 					select
