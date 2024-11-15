@@ -5,12 +5,9 @@ import {
 	ListItemText,
 	Typography,
 	Box,
-	TextField,
-	MenuItem,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { orderProducts } from "../redux/features/productsSlice";
+
 import { IProduct } from "../interfaces/product";
 import Filters from "./Filters";
 
@@ -20,14 +17,7 @@ type ProductsProps = {
 };
 
 const Products = ({ productsList, onButtonClick }: ProductsProps) => {
-	const dispatch = useDispatch();
-
-	const handleProductOrderChange = (
-		event: React.ChangeEvent<{ value: unknown }>
-	) => {
-		dispatch(orderProducts(event.target.value as string));
-	};
-
+	
 	return (
 		<Box sx={{ flex: 1 }}>
 			<Box
@@ -53,16 +43,7 @@ const Products = ({ productsList, onButtonClick }: ProductsProps) => {
 				</Button>
 			</Box>
 			<Filters />
-			<TextField
-				label="Orden"
-				select
-				fullWidth
-				value=""
-				onChange={handleProductOrderChange}
-			>
-				<MenuItem value="A">Ascendente</MenuItem>
-				<MenuItem value="D">Descendente</MenuItem>
-			</TextField>
+			
 
 			<List>
 				{productsList.length > 0 ? (

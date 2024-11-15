@@ -2,7 +2,7 @@ import { Box, Checkbox, FormControlLabel, MenuItem, TextField } from "@mui/mater
 import { filterProductsByCategory, filtersProductByAvailable } from "../redux/features/productsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-
+import { orderProducts } from "../redux/features/productsSlice";
 
 const Filters:React.FC = () => {
   const products = useSelector((state: RootState) => state.products.originalCopy);
@@ -15,8 +15,13 @@ const Filters:React.FC = () => {
 	const handleAvailabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(filtersProductByAvailable(event.target.checked ? true : null));
 	};
+  const handleProductOrderChange = (
+		event: React.ChangeEvent<{ value: unknown }>
+	) => {
+		dispatch(orderProducts(event.target.value as string));
+	};
     return(
-      <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+      <Box sx={{ display: "flex", overflowWrap:'break-word', gap: 2, mb: 3 }}>
       <TextField
         label="Categoría"
         select
@@ -42,6 +47,16 @@ const Filters:React.FC = () => {
         }
         label="Disponibles"
       />
+      <TextField
+				label="Orden"
+				select
+				fullWidth
+				value=""
+				onChange={handleProductOrderChange}
+			>
+				<MenuItem value="A">Ascendente</MenuItem>
+				<MenuItem value="D">Descendente</MenuItem>
+			</TextField>
     </Box>
     )
 }
