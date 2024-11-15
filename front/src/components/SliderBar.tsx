@@ -13,8 +13,8 @@ const SliderBar: React.FC = () => {
 			sx={{
 				position: "fixed",
 				bottom: 16,
-				right: 16,
-				padding: 1,
+				right: 3,
+				padding: 0,
 				display: "flex",
 				flexDirection: "column",
 				gap: 1,
@@ -28,17 +28,17 @@ const SliderBar: React.FC = () => {
 			>
 				<RefreshIcon />
 			</Button>
-			<Button sx={{ minWidth: "auto", padding: 1 }}>
+			<Button sx={{ minWidth: "auto", padding: 0 }}>
 				<a href="#clientes" style={{ border: "hidden" }}>
 					<AccountCircleIcon />
 				</a>
 			</Button>
-			<Button sx={{ minWidth: "auto", padding: 1 }}>
+			<Button sx={{ minWidth: "auto", padding: 0 }}>
 				<a href="#productos" style={{ border: "hidden" }}>
 					<ListIcon />
 				</a>
 			</Button>
-			<Button sx={{ minWidth: "auto", padding: 1 }}>
+			<Button sx={{ minWidth: "auto", padding: 0 }}>
 				<a href="#compras" style={{ border: "hidden" }}>
 					<StoreIcon />
 				</a>
