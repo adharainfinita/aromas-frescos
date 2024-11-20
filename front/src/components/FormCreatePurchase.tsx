@@ -8,11 +8,11 @@ import {
 	InputLabel,
 	Select,
 	MenuItem,
-	SelectChangeEvent
+	SelectChangeEvent,
 } from "@mui/material";
 import { createPurchase } from "../services/purchasesServices";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	PurchaseForm,
 	IdetailsForm,
@@ -20,11 +20,14 @@ import {
 } from "../interfaces/purchase";
 import { RootState } from "../redux/store";
 import Swal from "sweetalert2";
+import { filterProductsByCategory } from "../redux/features/productsSlice";
 
 const FormCreatePurchase: React.FC = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const customers = useSelector((state: RootState) => state.clients.customers);
 	const products = useSelector((state: RootState) => state.products.products);
+
 	// Estados para los datos generales de la compra y detalles
 	const [purchaseGeneral, setPurchaseGeneral] = useState<PurchaseForm>({
 		customerId: 0,
@@ -71,6 +74,13 @@ const FormCreatePurchase: React.FC = () => {
 		);
 	};
 
+	// Manejo de cambios en la categoría seleccionada
+	const handleCategoryChange = (
+		event: React.ChangeEvent<{ value: unknown }>
+	) => {
+		dispatch(filterProductsByCategory(event.target.value as string));
+	};
+
 	// Agregar un nuevo detalle de compra
 	const addDetail = () => {
 		setPurchaseDetails([
@@ -90,15 +100,15 @@ const FormCreatePurchase: React.FC = () => {
 
 		try {
 			await createPurchase(newPurchase);
-			Swal.fire('Éxito', 'al guardar la compra', 'success')
+			Swal.fire("Éxito", "al guardar la compra", "success");
 			navigate("/");
 		} catch (error: any) {
 			Swal.fire({
-				title:'Error!', 
+				title: "Error!",
 				text: error,
-				icon: 'error', 
-				confirmButtonText: 'Continuar'
-			})
+				icon: "error",
+				confirmButtonText: "Continuar",
+			});
 		}
 	};
 
@@ -128,18 +138,19 @@ const FormCreatePurchase: React.FC = () => {
 				<Typography variant="h6">Datos Generales</Typography>
 
 				<InputLabel>Nombre del Cliente</InputLabel>
-					<Select
-						name="customerId"
-						value={purchaseGeneral.customerId}
-						onChange={handleCustomerChange}
-						label='Cliente'
-					>
-						{customers.map((customer) => (
-							<MenuItem key={customer.customer_id} value={customer.customer_id}>
-								{customer.customer_name}
-							</MenuItem>
-						))}
-					</Select>
+				<Select
+					name="customerId"
+					fullWidth
+					value={purchaseGeneral.customerId}
+					onChange={handleCustomerChange}
+					label="Cliente"
+				>
+					{customers.map((customer) => (
+						<MenuItem key={customer.customer_id} value={customer.customer_id}>
+							{customer.customer_name}
+						</MenuItem>
+					))}
+				</Select>
 				<TextField
 					label="Monto Total"
 					type="number"
@@ -171,20 +182,46 @@ const FormCreatePurchase: React.FC = () => {
 				/>
 
 				<Typography variant="h6">Detalles de la Compra</Typography>
+
+				{/* Filtro por categoría */}
+				<InputLabel>Categoría</InputLabel>
+				<TextField
+					label="Categoría"
+					select
+					fullWidth
+					value={
+						useSelector(
+							(state: RootState) => state.products.requireFilters.category
+						) || ""
+					}
+					onChange={handleCategoryChange}
+				>
+					<MenuItem value="All">Todas</MenuItem>
+					{Array.from(new Set(products.map((p) => p.product_category))).map(
+						(category) => (
+							<MenuItem key={category} value={category}>
+								{category}
+							</MenuItem>
+						)
+					)}
+				</TextField>
+
+				{/* Detalles de la compra */}
 				{purchaseDetails.map((detail, index) => (
 					<div key={index}>
-				<Select
-								name="productId"
-								value={detail.productId}
-								onChange={(e) => handleProductChange(index, e)}
-								label='Producto'
-							>
-								{products.map((product) => (
-									<MenuItem key={product.product_id} value={product.product_id}>
-										{product.product_name}
-									</MenuItem>
-								))}
-							</Select>
+						<Select
+							name="productId"
+							fullWidth
+							value={detail.productId}
+							onChange={(e) => handleProductChange(index, e)}
+							label="Producto"
+						>
+							{products.map((product) => (
+								<MenuItem key={product.product_id} value={product.product_id}>
+									{product.product_name}
+								</MenuItem>
+							))}
+						</Select>
 						<TextField
 							label="Cantidad"
 							type="number"

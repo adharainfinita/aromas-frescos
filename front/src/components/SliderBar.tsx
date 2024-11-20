@@ -5,11 +5,11 @@ import StoreIcon from "@mui/icons-material/Store";
 import { Box, Button } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {resetFilters} from "../redux/features/productsSlice.ts";
+import { useDispatch } from "react-redux";
+import { resetFilters } from "../redux/features/productsSlice.ts";
 
 const SliderBar: React.FC = () => {
- const dispatch= useDispatch();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	return (
 		<Box
@@ -27,7 +27,7 @@ const SliderBar: React.FC = () => {
 			<Button
 				onClick={() => {
 					navigate("/");
-    dispatch(resetFilters);
+					dispatch(resetFilters());
 				}}
 			>
 				<RefreshIcon />

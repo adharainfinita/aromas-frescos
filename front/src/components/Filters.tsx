@@ -36,8 +36,8 @@ const Filters: React.FC = () => {
 		dispatch(orderProducts(event.target.value as string));
 	};
 	return (
-		<Box>
-			<Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 3 }}>
+		<>
+			<Box sx={{ display: "flex", overflowWrap: "break-word", gap: 2, mb: 3 }}>
 				<TextField
 					label="Categoría"
 					select
@@ -82,7 +82,7 @@ const Filters: React.FC = () => {
 				<MenuItem value="A">Ascendente</MenuItem>
 				<MenuItem value="D">Descendente</MenuItem>
 			</TextField>
-		</Box>
+		</>
 	);
 };
 
