@@ -6,7 +6,7 @@ import { Box, Button } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {resetFilters} from "../redux/features/productsSlider.ts";
+import {resetFilters} from "../redux/features/productsSlice.ts";
 
 const SliderBar: React.FC = () => {
  const dispatch= useDispatch();
