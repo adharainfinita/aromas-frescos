@@ -6,9 +6,7 @@ import {
 	Checkbox,
 	FormControlLabel,
 	InputLabel,
-	Select,
 	MenuItem,
-	SelectChangeEvent,
 } from "@mui/material";
 import { createPurchase } from "../services/purchasesServices";
 import { useNavigate } from "react-router-dom";
@@ -46,14 +44,14 @@ const FormCreatePurchase: React.FC = () => {
 		}));
 	};
 
-	const handleCustomerChange = (event: SelectChangeEvent<number>) => {
+	const handleCustomerChange = (event: React.ChangeEvent<{value:unknown}>) => {
 		setPurchaseGeneral((prevState) => ({
 			...prevState,
 			customerId: event.target.value as number,
 		}));
 	};
 
-	const handleProductChange = (index: number, event: SelectChangeEvent<number>) => {
+	const handleProductChange = (index: number, event: React.ChangeEvent<{ value: unknown }>) => {
 		setPurchaseDetails((prevDetails) =>
 			prevDetails.map((detail, i) =>
 				i === index ? { ...detail, productId: event.target.value as number } : detail
@@ -138,9 +136,10 @@ const FormCreatePurchase: React.FC = () => {
 				<Typography variant="h6">Datos Generales</Typography>
 
 				<InputLabel>Nombre del Cliente</InputLabel>
-				<Select
+				<TextField
 					name="customerId"
 					fullWidth
+					select
 					value={purchaseGeneral.customerId}
 					onChange={handleCustomerChange}
 					label="Cliente"
@@ -150,7 +149,7 @@ const FormCreatePurchase: React.FC = () => {
 							{customer.customer_name}
 						</MenuItem>
 					))}
-				</Select>
+				</TextField>
 				<TextField
 					label="Monto Total"
 					type="number"
@@ -189,6 +188,7 @@ const FormCreatePurchase: React.FC = () => {
 					label="Categoría"
 					select
 					fullWidth
+					margin="normal"
 					value={
 						useSelector(
 							(state: RootState) => state.products.requireFilters.category
@@ -209,9 +209,10 @@ const FormCreatePurchase: React.FC = () => {
 				{/* Detalles de la compra */}
 				{purchaseDetails.map((detail, index) => (
 					<div key={index}>
-						<Select
+						<TextField
 							name="productId"
 							fullWidth
+							select
 							value={detail.productId}
 							onChange={(e) => handleProductChange(index, e)}
 							label="Producto"
@@ -221,7 +222,7 @@ const FormCreatePurchase: React.FC = () => {
 									{product.product_name}
 								</MenuItem>
 							))}
-						</Select>
+						</TextField>
 						<TextField
 							label="Cantidad"
 							type="number"
@@ -247,7 +248,7 @@ const FormCreatePurchase: React.FC = () => {
 					onClick={addDetail}
 					variant="outlined"
 					color="primary"
-					style={{ marginTop: "10px" }}
+					style={{ marginTop: "20px" }}
 				>
 					Agregar Detalle
 				</Button>
