@@ -6,7 +6,6 @@ import productsRoute from './routes/productsRoute.js';
 import purchaseRoute from './routes/purchaseRoute.js';
 import { initDB } from './db/initDb.js';
 import cookieParser from 'cookie-parser';
-import { log } from 'console';
 
 
 const app: Application = express();

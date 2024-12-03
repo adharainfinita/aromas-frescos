@@ -4,6 +4,7 @@ import {
 	validateCreateProduct,
 	validateProductId,
 	validateUpdateProduct,
+	validateUpdatePrice
 } from "../middlewares/productsValidator.js";
 import { validate } from "../middlewares/validate.js";
 import {
@@ -15,15 +16,50 @@ import {
 	bulkCreateProducts,
 	updatePriceProducts,
 } from "../services/productsService.js";
-import { log } from "console";
 
 const router = express.Router();
 
+/** Rutas específicas */
+// POST: Crear múltiples productos (bulk)
+router.post(
+	"/bulk",
+	validateBulkCreateProducts,
+	validate,
+	async (req: Request, res: Response): Promise<void> => {
+		try {
+			const products = req.body;
+			await bulkCreateProducts(products);
+			res.status(201).json({ message: "Productos creados con éxito" });
+		} catch (error) {
+			console.error("Error al crear los productos:", error);
+			res.status(500).json({ error: "Error en la creación de productos" });
+		}
+	}
+);
+
+// PUT: Actualizar precios de productos por categoría
+router.put(
+	"/updatePrice",
+	validateUpdatePrice,
+	validate,
+	async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { price, category } = req.body;
+			await updatePriceProducts(price, category);
+			res.status(200).json({ message: "Precios actualizados con éxito" });
+		} catch (error) {
+			console.error("Error al actualizar los precios:", error);
+			res.status(500).json({ message: "Error al actualizar los precios" });
+		}
+	}
+);
+
+/** Rutas generales */
 // POST: Crear un nuevo producto
 router.post(
 	"/",
-	validateCreateProduct, // Validaciones de creación de productos
-	validate, // Middleware para manejar resultados de validación
+	validateCreateProduct,
+	validate,
 	async (req: Request, res: Response): Promise<void> => {
 		try {
 			const productId = await createProduct(req.body);
@@ -48,11 +84,12 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 	}
 });
 
+/** Rutas dinámicas */
 // GET: Obtener un producto por su ID
 router.get(
 	"/:id",
-	validateProductId, // Validación del ID del producto
-	validate, // Middleware para manejar resultados de validación
+	validateProductId,
+	validate,
 	async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.params;
@@ -72,8 +109,8 @@ router.get(
 // PUT: Actualizar un producto
 router.put(
 	"/:id",
-	validateUpdateProduct, // Validaciones para la actualización de productos
-	validate, // Middleware para manejar resultados de validación
+	validateUpdateProduct,
+	validate,
 	async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.params;
@@ -90,6 +127,7 @@ router.put(
 	}
 );
 
+// DELETE: Eliminar un producto por su ID
 router.delete(
 	"/:id",
 	validateProductId,
@@ -106,40 +144,6 @@ router.delete(
 		} catch (error) {
 			console.error("Error al eliminar el producto:", error);
 			res.status(500).json({ error: "Error al eliminar el producto" });
-		}
-	}
-);
-
-router.post(
-	"/bulk",
-	validateBulkCreateProducts,
-	validate,
-	async (req: Request, res: Response): Promise<void> => {
-		try {
-			const products = req.body;
-			await bulkCreateProducts(products);
-			res.status(201).json({ message: "Productos creados con éxito" });
-		} catch (error) {
-			console.log("Error al crear los productos: ", error);
-			res
-				.status(500)
-				.json({ error: "Hubo un error en la creación de productos" });
-		}
-	}
-);
-
-router.put(
-	"/updatePrice",
-	validateUpdateProduct,
-	validate,
-	async (req: Request, res: Response): Promise<void> => {
-		try {
-			const {price, category} = req.body;
-			await updatePriceProducts(price, category);
-			res.status(200).json({ message: "Precios actualizados con éxito"});
-		} catch (error) {
-			console.log("Error al actualizar los precios: ", error);
-			res.status(500).json({message: "Error al actualizar los precios"})
 		}
 	}
 );

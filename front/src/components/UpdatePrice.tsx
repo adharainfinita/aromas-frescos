@@ -31,7 +31,7 @@ const UpdatePrice: React.FC = () => {
         const categoryPrice = categories.find(([cat]) => cat === category)?.[1] || null;
         setCurrentPrice(categoryPrice);
     };
-
+    
     const handleSubmit = async () => {
         if (!selectedCategory || !newPrice) {
             Swal.fire("Error", "Debes seleccionar una categoría y asignar un nuevo precio.", "error");
