@@ -8,6 +8,7 @@ import FormCreateCustomer from "./components/FormCreateCustomer";
 import FormCreatePurchase from "./components/FormCreatePurchase";
 import ProductDetail from "./components/ProductDetail";
 import PurchaseDetail from "./components/PurchaseDetail";
+import UpdatePrice from "./components/UpdatePrice";
 
 function App() {
 	return (
@@ -38,6 +39,7 @@ function App() {
 				<Route path="/createPurchase" element={<FormCreatePurchase />} />
 				<Route path="/product/:id" element={<ProductDetail />} />
 				<Route path="/purchase/:id" element={<PurchaseDetail />} />
+				<Route path="/updatePrice" element={<UpdatePrice />} />
 			</Routes>
 		</Box>
 	);
