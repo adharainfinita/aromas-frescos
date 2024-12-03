@@ -13,6 +13,7 @@ import {
 	getProductById,
 	updateProduct,
 	bulkCreateProducts,
+	updatePriceProducts,
 } from "../services/productsService.js";
 import { log } from "console";
 
@@ -123,6 +124,22 @@ router.post(
 			res
 				.status(500)
 				.json({ error: "Hubo un error en la creación de productos" });
+		}
+	}
+);
+
+router.put(
+	"/updatePrice",
+	validateUpdateProduct,
+	validate,
+	async (req: Request, res: Response): Promise<void> => {
+		try {
+			const {price, category} = req.body;
+			await updatePriceProducts(price, category);
+			res.status(200).json({ message: "Precios actualizados con éxito"});
+		} catch (error) {
+			console.log("Error al actualizar los precios: ", error);
+			res.status(500).json({message: "Error al actualizar los precios"})
 		}
 	}
 );

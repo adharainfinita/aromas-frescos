@@ -79,3 +79,22 @@ export const deleteProduct = async (id: number) => {
 		throw new Error(errorMessage);
 	}
 };
+
+export const updatePriceByCategory = async (price: number, category: string) => {
+
+	try {
+		const response = await axios.put(
+			`${URL_HOST}/products/updatePrice`,
+		{price, category},
+			axiosConfig
+		);
+		console.log("respuesta del back: ", response.data);
+		return response.data;
+	} catch (error: any) {
+		const errorMessage = axios.isAxiosError(error)
+			? error.response?.data?.error ||
+			  "An error occurred while updating the product."
+			: "An unexpected error occurred.";
+		throw new Error(errorMessage);
+	}
+};

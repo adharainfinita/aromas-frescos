@@ -114,3 +114,31 @@ export async function bulkCreateProducts(products: IProduct[]) {
 		db.release();
 	}
 }
+
+export async function updatePriceProducts(price: number, category: string) {
+  const db = await connectDB();
+
+  try {
+    await db.query("BEGIN");
+
+    // Actualizar precios según la categoría
+    const result = await db.query(
+      `UPDATE products 
+       SET product_price = $1 
+       WHERE product_category = $2`,
+      [price, category]
+    );
+
+    // Confirmar la transacción
+    await db.query("COMMIT");
+
+    // Retornar la cantidad de filas afectadas
+    return result.rowCount;
+  } catch (error) {
+    // Revertir la transacción en caso de error
+    await db.query("ROLLBACK");
+    throw error; // Propagar el error para manejarlo externamente
+  } finally {
+    db.release(); // Liberar la conexión
+  }
+}

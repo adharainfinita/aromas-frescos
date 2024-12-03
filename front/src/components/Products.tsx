@@ -6,7 +6,7 @@ import {
 	Typography,
 	Box,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { IProduct } from "../interfaces/product";
 import Filters from "./Filters";
@@ -17,7 +17,7 @@ type ProductsProps = {
 };
 
 const Products = ({ productsList, onButtonClick }: ProductsProps) => {
-	
+	const navigate = useNavigate();
 	return (
 		<Box sx={{ flex: 1 }}>
 			<Box
@@ -40,6 +40,13 @@ const Products = ({ productsList, onButtonClick }: ProductsProps) => {
 					sx={{ bgcolor: "#4a235a" }}
 				>
 					Agregar Producto
+				</Button>
+				<Button
+				variant="contained"
+				sx={{ bgcolor: "#4a235a" }}
+				onClick={()=> navigate("/updatePrice")}
+				>
+					$
 				</Button>
 			</Box>
 			<Filters />

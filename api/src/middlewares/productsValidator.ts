@@ -46,3 +46,8 @@ export const validateBulkCreateProducts = [
     .isInt({ min: 0 })
     .withMessage('El stock debe ser un número mayor o igual a 0')
 ]
+
+export const validateUpdatePrice = [
+  body('price').notEmpty().isFloat({gt:0}).withMessage('El precio debe ser un número mayor a 0'),
+  body('category').notEmpty().withMessage('La categoría es obligatoria')
+]
