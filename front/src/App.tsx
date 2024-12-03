@@ -18,6 +18,7 @@ function App() {
 			alignItems="center" // Alinea horizontalmente
 			justifyContent="center" // Alinea verticalmente
 			minHeight="100vh" // Asegura que ocupa todo el alto de la pantalla
+			bgcolor=" #ADD899"
 		>
 			<CssBaseline />
 			<Box

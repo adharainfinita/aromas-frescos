@@ -48,7 +48,7 @@ const UpdatePrice: React.FC = () => {
     };
 
     return (
-        <div style={{ padding: "2%", background: "#f4f4f4", borderRadius: "8px", marginTop: "2%" }}>
+        <div style={{ padding: "2%", borderRadius: "8px", marginTop: "2%" }}>
             <Typography variant="h5" gutterBottom>
                 Actualizar Precios por Categoría
             </Typography>
